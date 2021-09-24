@@ -2,6 +2,7 @@
 
 const fs = require('fs/promises');
 const db = require('../models/index');
+const fetchReq = require('./zapposDBmethods')
 
 //User Methods
 exports.getUsers = async function (ctx) {
@@ -169,27 +170,6 @@ exports.zapposFilter = async () => {
   const interval = setInterval(resultFunc, 3000);
 
 }
-
-const fetchReq = (id) => {
-  var options = {
-    method: 'GET',
-    url: 'https://zappos1.p.rapidapi.com/products/detail',
-    params: {productId: id},
-    headers: {
-      'x-rapidapi-host': 'zappos1.p.rapidapi.com',
-      'x-rapidapi-key': '3cec6d86efmsha36e78fbc09ce32p10a5a5jsnc9f3872c8c8d'
-    }
-  };
-  return axios.request(options).then(function (response) {
-    return {
-      imageUrl: response.data.baseUrl+response.data.product[0].defaultImageUrl, 
-      category: response.data.product[0].defaultCategory
-    }
-  }).catch(function (error) {
-    console.error(error);
-  });
-};
-
 exports.postItemsZappo = async (ctx) => {
   const body = resultsFiltered;
   try {
