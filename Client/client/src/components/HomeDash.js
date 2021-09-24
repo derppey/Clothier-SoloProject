@@ -1,8 +1,11 @@
 import React from 'react'
 import SearchResults from './SearchResults'
 import { Link } from "react-router-dom";
+import { connect } from 'react-redux';
+import actions from '../redux/actions';
 
-export default function HomeDash({searchToggle, setSearchToggle}) {
+
+function HomeDash({searchToggle, setSearchToggle, items}) {
 
   const mock = {
     title: 'testItem',
@@ -19,11 +22,25 @@ export default function HomeDash({searchToggle, setSearchToggle}) {
       Categories:
     </div>
     <div className="dashboardItems">
+      {items.title}
       <Link to="/itemDetail">
-        <img src={mock.image} alt="n/a" />
+        <img src={items.image} alt="n/a" />
       </Link>
     </div>
     </>
   )
 }
+
+const mapStateToProps = ({items}) => {
+  return {
+    items: items.items[0],
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeDash);
 
