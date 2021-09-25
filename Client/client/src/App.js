@@ -41,6 +41,11 @@ function App({getItems}) {
     // search for items and persons and pass it to search component
   }
 
+  const logOut = () => {
+    localStorage.removeItem('accessToken');
+    setAuthenticated(false);
+  }
+
   //LogIn and registration flow:
   if (!authenticated) return (
     <Router>
@@ -70,7 +75,7 @@ function App({getItems}) {
       <Link to='/MyCloset'>
       <button className="button" type='click'> MyCloset </button>
       </Link>
-      <button className="button" type='click' onClick={() => {setAuthenticated(false)}} > Log Out </button>
+      <button className="button" type='click' onClick={() => logOut()} > Log Out </button>
     </div>
 
     {/* Router routes */}
