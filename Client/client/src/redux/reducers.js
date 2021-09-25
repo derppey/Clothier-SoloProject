@@ -1,22 +1,41 @@
 import { combineReducers } from 'redux';
 
 const initialState = {
-  items: [] ,
-  setAuthenticated: false
+  items: [],
+  user: {},
+  searchBool: false
 }
 
-const items = (state = initialState, action) => {
+const store = (state = initialState, action) => {
   switch (action.type) {
     case 'getItems':
-    return {items: [...state.items, ...action.payload]};
-  default:
-    return state;
+    return {
+      ...state,
+      items: [...action.payload]
+    };
+    case 'getUser':
+      return {
+        ...state,
+        user: {...action.payload}
+        };
+    case 'toggleSearchTrue':
+      return {
+        ...state,
+        searchBool: action.payload
+        };
+    case 'toggleSearchFalse':
+      return {
+        ...state,
+        searchBool: action.payload
+      };
+    default:
+      return state;
   }
 };
 
 // Combining both reducers
 const reducers = combineReducers({
-  items,
+  store,
 });
 
 export default reducers;

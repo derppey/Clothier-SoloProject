@@ -90,6 +90,18 @@ exports.getUserById = async function (ctx) {
   }
 };
 
+exports.profile = async (ctx) => {
+  try {
+    const { primaryKey, firstName, lastName } = ctx.request.user;
+    const user = { primaryKey, firstName, lastName };
+    ctx.status = 200;
+    ctx.body = user;
+  } catch {
+    ctx.status = 404
+    ctx.body = {error: 404, message: 'Resource not found' };
+  }
+};
+
 //Item Methods
 exports.getItems = async function (ctx) {
   try {

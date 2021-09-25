@@ -23,4 +23,19 @@ apiService.login = (user) => {
     .catch((err) => console.log(err))
 }
 
+apiService.profile = (accessToken) => {
+  return fetch(`${baseURL}/me`, {
+    method: 'GET',
+    credentials: 'include',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  })
+    .then((res) => res.json())
+    .catch((err) => console.log(err));
+};
+
+
 export default apiService;

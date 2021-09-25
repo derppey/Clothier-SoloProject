@@ -5,10 +5,10 @@ import { connect } from 'react-redux';
 // import actions from '../redux/actions';
 
 
-function HomeDash({searchToggle, setSearchToggle, items}) {
+function HomeDash({items, searchBool}) {
 
-  if(searchToggle) return (
-    <SearchResults setSearchToggle={setSearchToggle}></SearchResults>
+  if(searchBool) return (
+    <SearchResults></SearchResults>
   )
   if(!items) return (
     <div className="loading">Loading...</div>
@@ -20,7 +20,7 @@ function HomeDash({searchToggle, setSearchToggle, items}) {
     </div>
     <div className="dashboardItems">
       {items.map(item =>
-        <div key={item.primaryKey.toString()}>
+        <div key={item.primaryKey}>
       <Link to="/itemDetail">
           <img src={item.image} alt="n/a" />
       </Link>
@@ -31,9 +31,10 @@ function HomeDash({searchToggle, setSearchToggle, items}) {
   )
 }
 
-const mapStateToProps = ({items}) => {
+const mapStateToProps = ({store}) => {
   return {
-    items: items.items,
+    items: store.items,
+    searchBool: store.searchBool
   };
 };
 

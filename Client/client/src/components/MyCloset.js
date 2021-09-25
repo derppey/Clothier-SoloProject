@@ -1,10 +1,13 @@
 import React from 'react'
 import SearchResults from './SearchResults'
+import { connect } from 'react-redux';
+// import actions from '../redux/actions';
 
-export default function MyCloset({searchToggle, setSearchToggle}) {
+
+function MyCloset({user, searchBool}) {
   
-  if(searchToggle) return (
-    <SearchResults setSearchToggle={setSearchToggle}></SearchResults>
+  if(searchBool) return (
+    <SearchResults></SearchResults>
   )
 
   return (
@@ -13,4 +16,20 @@ export default function MyCloset({searchToggle, setSearchToggle}) {
     </div>
   )
 }
+
+const mapStateToProps = ({store}) => {
+  return {
+    user: store.user,
+    searchBool: store.searchBool
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    toggleSearch: (action) => dispatch(action),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyCloset);
+
 
