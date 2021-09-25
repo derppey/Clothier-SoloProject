@@ -1,39 +1,40 @@
 import React from 'react'
 import { useState } from 'react';
 import { Link } from "react-router-dom";
+import apiService from '../apiServices';
+// import auth from '../utils/auth';
 
+const initialState = {
+  email: '',
+  password: '',
+};
 
-export default function LogIn() {
-  const [userLogin, setUserLogin] = useState({
-    Email: '',
-    password: ''
-  });
+export default function LogIn({setAuthenticated}) {
+  const [userLogin, setUserLogin] = useState(initialState);
 
   const handleEvent = (e) => {
-    setUserLogin({
-      ...userLogin,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setUserLogin((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(userLogin)
-    setUserLogin({
-      Email: '',
-      password: ''
-    })
-    // try {
-    // await postTopic(newEvent);
-    // setNewEvent({
-    //   title: '',
-    //   date: '',
-    //   venue: '',
-    // });
-    // setChange(false);
-    // } catch (error) {
-    //  console.log('ERROR SUBMITING EVENT:', error);
-    // }
+    const { email, password } = userLogin;
+    const user = { email, password };
+    const res = await apiService.login(user);
+    
+    if (res.error) {
+      alert(`${res.message}`);
+      setUserLogin(initialState);
+    } else {
+      const { accessToken } = res;
+      localStorage.setItem('accessToken', accessToken);
+      setAuthenticated(true);
+      // auth.login(() => props.history.push('/profile'));
+    }
   }
 
   return (
@@ -41,7 +42,7 @@ export default function LogIn() {
       <div>
       <h1>Log In: </ h1>
       <form onSubmit={handleSubmit}>
-        <input type='text' required={true} name='Email' placeholder="Email" value={userLogin.Email} onChange={handleEvent}/>
+        <input type='text' required name='email' placeholder="Email" value={userLogin.email} onChange={handleEvent}/>
         <input type='password' required placeholder='Password' name='password' value={userLogin.password} onChange={handleEvent}/>
         <button className="button" type='submit'> Submit </button>
       </form>

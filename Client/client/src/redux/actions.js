@@ -1,7 +1,7 @@
 const actions = {
-  getItems : () => ({
+  getItems : (items) => ({
     type: 'getItems',
-    payload: {}
+    payload: items
   }),
 };
 

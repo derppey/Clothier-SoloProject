@@ -4,24 +4,31 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
-  NavLink
+  Link
 } from "react-router-dom";
 import HomeDash from './components/HomeDash';
 import Register from './components/Register';
 import ItemDetail from './components/ItemDetail';
 import MyCloset from './components/MyCloset';
 import LoginPage from './components/LoginPage';
+import actions from './redux/actions';
+import { connect } from 'react-redux';
+import apiService from './apiServices';
 
-function App() {
-  const [authenticated, setAuthenticated] = useState(true);
+function App({getItems}) {
+  const [authenticated, setAuthenticated] = useState(false);
   const [searchToggle, setSearchToggle] = useState(false);
   const [searchValue, setSearchValue] = useState('');
-  
-  //fetch login password compare
-
-  //fetch clothes
-
+    
+    //UseEffect:
+    useEffect(() => {
+      async function fetchData() {
+        const itemArr = await apiService.fetchItems();
+        getItems(actions.getItems(itemArr));
+      }
+      fetchData();
+    }, [getItems]);
+    
   //Handle searchbar:
   const handleEvent = (e) => {
     setSearchValue(e.target.value);
@@ -30,7 +37,7 @@ function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSearchValue('')
+    setSearchValue('');
     // search for items and persons and pass it to search component
   }
 
@@ -39,7 +46,7 @@ function App() {
     <Router>
       <Switch>
       <Route path="/" exact>
-          <LoginPage></LoginPage>
+          <LoginPage setAuthenticated={setAuthenticated}></LoginPage>
         </Route>
       <Route path="/register" exact>
           <Register setAuthenticated={setAuthenticated}></Register>
@@ -82,4 +89,16 @@ function App() {
   )
 }
 
-export default App;
+const mapStateToProps = ({items}) => {
+  return {
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getItems: (action) => dispatch(action)
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
+

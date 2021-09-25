@@ -3,11 +3,14 @@
 const Router = require('koa-router');
 const router = new Router();
 const mainMethods = require('./controllers/mainMethods');
+const authMiddleware = require('./middlewares/auth');
 
 //Get all users
 router.get('/users', mainMethods.getUsers);
 //Register new User
 router.post('/users', mainMethods.postUsers);
+//Register new User
+router.get('/usersById', mainMethods.getUserById);
 
 //Get all items
 router.get('/items', mainMethods.getItems);
@@ -27,5 +30,8 @@ router.post('/follow', mainMethods.followUser);
 //Zappos DB populator
 router.get('/zappos', mainMethods.zapposFilter);
 router.post('/zappos', mainMethods.postItemsZappo );
+
+//User Login Authenticaiton
+router.post('/login', mainMethods.login);
 
 module.exports = router;

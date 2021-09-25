@@ -2,19 +2,16 @@ import React from 'react'
 import SearchResults from './SearchResults'
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
-import actions from '../redux/actions';
+// import actions from '../redux/actions';
 
 
 function HomeDash({searchToggle, setSearchToggle, items}) {
 
-  const mock = {
-    title: 'testItem',
-    category: 'jeans',
-    image: "https://www.zappos.com/images/z/5/1/4/2/0/9/5142092-p-DETAILED.jpg"
-  }
-
   if(searchToggle) return (
     <SearchResults setSearchToggle={setSearchToggle}></SearchResults>
+  )
+  if(!items) return (
+    <div className="loading">Loading...</div>
   )
   return (
     <>
@@ -22,10 +19,13 @@ function HomeDash({searchToggle, setSearchToggle, items}) {
       Categories:
     </div>
     <div className="dashboardItems">
-      {items.title}
+      {items.map(item =>
+        <div key={item.primaryKey.toString()}>
       <Link to="/itemDetail">
-        <img src={items.image} alt="n/a" />
+          <img src={item.image} alt="n/a" />
       </Link>
+        </div>
+      )}
     </div>
     </>
   )
@@ -33,14 +33,14 @@ function HomeDash({searchToggle, setSearchToggle, items}) {
 
 const mapStateToProps = ({items}) => {
   return {
-    items: items.items[0],
+    items: items.items,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-  };
-};
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//   };
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeDash);
+export default connect(mapStateToProps)(HomeDash);
 

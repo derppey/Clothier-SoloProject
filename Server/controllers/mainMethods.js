@@ -1,8 +1,12 @@
 'use strict';
 
-const fs = require('fs/promises');
 const db = require('../models/index');
 const fetchReq = require('./zapposDBmethods')
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
+const SECRET_KEY = process.env.SECRET_KEY;
+
 
 //User Methods
 exports.getUsers = async function (ctx) {
@@ -54,11 +58,43 @@ exports.postUsers = async ctx => {
   }
 };
 
+//User Methods
+exports.getUserById = async function (ctx) {
+  try {
+    ctx.body = await db.users.findOne({
+      where: { primaryKey: 7},
+      include: [
+        {
+        model: db.ADQ,
+        attributes: ['itemPrimaryKey'],
+        include: {
+          model: db.items,
+          attributes: ['title']
+        }
+      },
+      {
+        model: db.Follows,
+        attributes: ['userPrimaryKey'],
+        include: {
+          model: db.users,
+          attributes: ['firstName', 'lastName']
+        }
+      }
+    ],
+      attributes: ['firstName', 'lastName', 'primaryKey']
+    }); 
+    ctx.status = 200;
+  } catch (err) {
+    ctx.body = err;
+    ctx.status = 500;
+  }
+};
+
 //Item Methods
 exports.getItems = async function (ctx) {
   try {
     ctx.body = await db.items.findAll({
-      attributes: ['title', 'category', 'price', 'image', 'primaryKey', 'createdAt']
+      attributes: ['title', 'category', 'brand', 'image', 'productId', 'productUrl', 'primaryKey', 'createdAt']
     }); 
     ctx.status = 200;
   } catch (err) {
@@ -136,7 +172,25 @@ exports.getFollows = async function (ctx) {
   }
 };
 
-//-----------------------
+//LogIn method
+exports.login = async (ctx) => {
+  const { email , password } = ctx.request.body;
+  try {
+    const user = await db.users.findOne({
+      where: { email: email}});
+    // const validatedPass = await bcrypt.compare(password, user.password);
+    const validatedPass = (password === user.dataValues.password);
+    if (!validatedPass) throw new Error();
+    const accessToken = jwt.sign({ _id: user.dataValues.primaryKey }, SECRET_KEY);
+    ctx.status = 200
+    ctx.body = { accessToken };
+  } catch (error) {
+    ctx.status = 401
+    ctx.body = { error: '401', message: 'Username or password is incorrect' };
+  }
+};
+
+//The following code is just to get the items from Zappos Api in order to populate the DB
 
 const { zapposProductList } = require('../tempDb')
 const results = zapposProductList.results;

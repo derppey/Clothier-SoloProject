@@ -1,17 +1,14 @@
 import { combineReducers } from 'redux';
 
 const initialState = {
-  items: [
-    {
-    title: 'testItem',
-    category: 'jeans',
-    image: "https://www.zappos.com/images/z/5/1/4/2/0/9/5142092-p-DETAILED.jpg"
-  },
-] ,
-};
+  items: [] ,
+  setAuthenticated: false
+}
 
 const items = (state = initialState, action) => {
   switch (action.type) {
+    case 'getItems':
+    return {items: [...state.items, ...action.payload]};
   default:
     return state;
   }

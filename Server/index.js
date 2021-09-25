@@ -5,9 +5,15 @@ const cors = require('@koa/cors');
 const router = require('./router');
 const db = require('./models/index.js');
 
-app.use(cors());
+const corsConfig = {
+  origin: 'http://localhost:3000',
+  credentials: true,
+};
+
+app.use(cors(corsConfig));
 app.use(bodyParser());
 app.use(router.routes());
+
 
 const PORT = 3001;
 
