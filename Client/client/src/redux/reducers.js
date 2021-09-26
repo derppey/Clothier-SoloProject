@@ -3,7 +3,8 @@ import { combineReducers } from 'redux';
 const initialState = {
   items: [],
   user: {},
-  searchBool: false
+  searchVal: '',
+  selectedItem: {},
 }
 
 const store = (state = initialState, action) => {
@@ -18,15 +19,15 @@ const store = (state = initialState, action) => {
         ...state,
         user: {...action.payload}
         };
-    case 'toggleSearchTrue':
+    case 'getSingleItem':
       return {
         ...state,
-        searchBool: action.payload
-        };
-    case 'toggleSearchFalse':
+        selectedItem: action.payload
+      };
+    case 'setSearchVal':
       return {
         ...state,
-        searchBool: action.payload
+        searchVal: action.payload
       };
     default:
       return state;

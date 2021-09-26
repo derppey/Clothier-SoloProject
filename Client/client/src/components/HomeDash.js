@@ -2,12 +2,12 @@ import React from 'react'
 import SearchResults from './SearchResults'
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
-// import actions from '../redux/actions';
+import actions from '../redux/actions';
 
 
-function HomeDash({items, searchBool}) {
+function HomeDash({items, searchVal, setSelectedItem}) {
 
-  if(searchBool) return (
+  if(searchVal) return (
     <SearchResults></SearchResults>
   )
   if(!items) return (
@@ -22,7 +22,7 @@ function HomeDash({items, searchBool}) {
       {items.map(item =>
         <div key={item.primaryKey}>
       <Link to="/itemDetail">
-          <img src={item.image} alt="n/a" />
+          <img src={item.image} onClick={() => setSelectedItem(actions.getSingleItem(item))} alt="n/a"/>
       </Link>
         </div>
       )}
@@ -34,14 +34,15 @@ function HomeDash({items, searchBool}) {
 const mapStateToProps = ({store}) => {
   return {
     items: store.items,
-    searchBool: store.searchBool
+    searchVal: store.searchVal,
   };
 };
 
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//   };
-// };
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setSelectedItem: (action) => dispatch(action)
+  };
+};
 
-export default connect(mapStateToProps)(HomeDash);
+export default connect(mapStateToProps, mapDispatchToProps)(HomeDash);
 

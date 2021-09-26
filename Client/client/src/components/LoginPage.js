@@ -33,7 +33,6 @@ export default function LogIn({setAuthenticated}) {
       const { accessToken } = res;
       localStorage.setItem('accessToken', accessToken);
       setAuthenticated(true);
-      // auth.login(() => props.history.push('/profile'));
     }
   }
 

@@ -2,6 +2,8 @@
 const jwt = require('jsonwebtoken');
 const SECRET_KEY = process.env.SECRET_KEY;
 const db = require('../models/index');
+const mainMethods = require('../controllers/mainMethods');
+
 
 // REMOVE-END
 
@@ -11,9 +13,9 @@ const authMiddleware = async (ctx, next) => {
   const token = authHeaders.split(' ')[1];
   try {
     const { _id } = jwt.verify(token, SECRET_KEY);
-    const user = await db.users.findOne({where: {primaryKey: _id} });
+    const user = await mainMethods.getUserById(_id);
     if (!user) return ctx.status = 401;
-    ctx.request.user = user.dataValues;
+    ctx.request.user = user;
     next();
   } catch (error) {
     ctx.status = 401;

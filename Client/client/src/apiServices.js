@@ -37,5 +37,67 @@ apiService.profile = (accessToken) => {
     .catch((err) => console.log(err));
 };
 
+apiService.register = (newUser) => {
+  return fetch(`${baseURL}/users`, {
+    method: 'POST',
+    credentials: 'include',
+    mode: 'cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(newUser),
+  })
+    .then((res) => (res.json()))
+    .catch((err) => console.log(err))
+}
+
+apiService.getUsers = (accessToken) => {
+  return fetch(`${baseURL}/users`, {
+    method: 'GET',
+    credentials: 'include',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  })
+    .then((res) => res.json())
+    .catch((err) => console.log(err));
+};
+
+apiService.follow = (profileId, currentId) => {
+  return fetch(`${baseURL}/follow`, {
+    method: 'POST',
+    credentials: 'include',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      currentUserId: currentId,
+      profileUser: profileId
+    })
+  })
+    .then((res) => res)
+    .catch((err) => console.log(err));
+};
+
+apiService.ADQ = (UserId, ItemId) => {
+  return fetch(`${baseURL}/adq`, {
+    method: 'POST',
+    credentials: 'include',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      UserId: UserId,
+      ItemId: ItemId
+    })
+  })
+    .then((res) => res)
+    .catch((err) => console.log(err));
+};
+
+
+
 
 export default apiService;

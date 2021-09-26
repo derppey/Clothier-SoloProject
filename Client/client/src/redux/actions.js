@@ -7,14 +7,14 @@ const actions = {
     type: 'getUser',
     payload: user
   }),
-  toggleSearchTrue : () => ({
-    type: 'toggleSearchTrue',
-    payload: true
+  getSingleItem : (item) => ({
+    type: 'getSingleItem',
+    payload: item
   }),
-  toggleSearchFalse : () => ({
-    type: 'toggleSearchTrue',
-    payload: false
-  })
+  setSearchVal : (item) => ({
+    type: 'setSearchVal',
+    payload: item
+  }),
 };
 
 export default actions;

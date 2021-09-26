@@ -12,25 +12,7 @@ const SECRET_KEY = process.env.SECRET_KEY;
 exports.getUsers = async function (ctx) {
   try {
     ctx.body = await db.users.findAll({
-      include: [
-        {
-        model: db.ADQ,
-        attributes: ['itemPrimaryKey'],
-        include: {
-          model: db.items,
-          attributes: ['title']
-        }
-      },
-      {
-        model: db.Follows,
-        attributes: ['userPrimaryKey'],
-        include: {
-          model: db.users,
-          attributes: ['firstName', 'lastName']
-        }
-      }
-    ],
-      attributes: ['firstName', 'lastName', 'primaryKey']
+      attributes: ['firstName', 'lastName', 'username', 'primaryKey']
     }); 
     ctx.status = 200;
   } catch (err) {
@@ -40,18 +22,20 @@ exports.getUsers = async function (ctx) {
 };
 
 exports.postUsers = async ctx => {
-  const body = ctx.request.body;
+  const user = ctx.request.body;
   try {
-    await body.forEach(user => {
-      db.users.create({
-        firstName: user.name.firstname,
-        lastName: user.name.lastname,
-        username: user.username,
-        email: user.email,
-        password: user.password,
-        })
+    await db.users.create({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      username: user.username,
+      email: user.email,
+      password: user.password,
       })
     ctx.status = 201;
+    ctx.body = await db.users.findOne({
+      where: {email: user.email},
+      attributes: ['primaryKey']
+    })
   } catch (err) {
     ctx.body = err;
     ctx.status = 500;
@@ -59,17 +43,17 @@ exports.postUsers = async ctx => {
 };
 
 //User Methods
-exports.getUserById = async function (ctx) {
+exports.getUserById = async function (id) {
   try {
-    ctx.body = await db.users.findOne({
-      where: { primaryKey: 7},
+    return await db.users.findOne({
+      where: { primaryKey: id},
       include: [
         {
         model: db.ADQ,
         attributes: ['itemPrimaryKey'],
         include: {
           model: db.items,
-          attributes: ['title']
+          attributes: ['title', 'category', 'brand', 'image', 'productId', 'productUrl', 'primaryKey']
         }
       },
       {
@@ -83,17 +67,14 @@ exports.getUserById = async function (ctx) {
     ],
       attributes: ['firstName', 'lastName', 'primaryKey']
     }); 
-    ctx.status = 200;
   } catch (err) {
-    ctx.body = err;
-    ctx.status = 500;
+    return null;
   }
 };
 
 exports.profile = async (ctx) => {
   try {
-    const { primaryKey, firstName, lastName } = ctx.request.user;
-    const user = { primaryKey, firstName, lastName };
+    const user = ctx.request.user;
     ctx.status = 200;
     ctx.body = user;
   } catch {
@@ -164,12 +145,12 @@ exports.followUser = async ctx => {
   const body = ctx.request.body;
   try {
     const currentUser = await db.users.findOne({where: {primaryKey: body.currentUserId}})
-    const toFollowUser = await db.users.findOne({where: {primaryKey: body.toFollowUserId}})
-    currentUser.addUser(toFollowUser);
+    const profileUser = await db.users.findOne({where: {primaryKey: body.profileUser}})
+    currentUser.addUser(profileUser);
     ctx.status = 201;
     return currentUser.getUser()
   } catch (err) {
-    ctx.body = err;
+    ctx.body.error = err;
     ctx.status = 500;
   }
 };
@@ -210,7 +191,6 @@ var axios = require("axios").default;
 let resultsFiltered;
 
 exports.zapposFilter = async () => {
-  console.log('starting filter');
   resultsFiltered = results.map((item, index) => {
     return {
       [index] : {

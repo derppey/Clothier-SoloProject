@@ -15,42 +15,33 @@ import actions from './redux/actions';
 import { connect } from 'react-redux';
 import apiService from './apiServices';
 
-function App({getItems, getUser, user, toggleSearch}) {
+function App({getItems, getUser, user, setSearchVal, searchVal}) {
   const [authenticated, setAuthenticated] = useState(false);
-  const [searchValue, setSearchValue] = useState('');
-    
+  
   //UseEffect:
   useEffect(() => {
     async function fetchData() {
-      if (authenticated) {
       const itemArr = await apiService.fetchItems();
       getItems(actions.getItems(itemArr));
-      }
     }
-    fetchData();
-    getProfile();
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken) {
+      setAuthenticated(true);
+      fetchData();
+      getProfile(accessToken);
+    }
   }, [authenticated]);
 
   //getProfile
-  const getProfile = async () => {
-    if (authenticated) {
-    const accessToken = localStorage.getItem('accessToken');
+  const getProfile = async (accessToken) => {
     const userInfo = await apiService.profile(accessToken);
     if (userInfo.error) console.log('No user info found');
     else getUser(actions.getUser(userInfo));
-    }
   };
     
   //Handle searchbar:
   const handleEvent = (e) => {
-    setSearchValue(e.target.value);
-    toggleSearch(actions.toggleSearchTrue());
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSearchValue('');
-    // search for items and persons and pass it to search component
+    setSearchVal(actions.setSearchVal(e.target.value));
   }
 
   const logOut = () => {
@@ -81,13 +72,15 @@ function App({getItems, getUser, user, toggleSearch}) {
       <h1>Clothier</h1>
       </Link>
       <h1>Hi {user.firstName}</h1>
-      <form onSubmit={handleSubmit}>
-        <input type="text" placeholder="🔍 Search" value={searchValue} onChange={handleEvent}/>
+      <form>
+        <input type="text" placeholder="🔍 Search" value={searchVal} onChange={handleEvent}/>
       </form>
       <Link to='/MyCloset'>
       <button className="button" type='click'> MyCloset </button>
       </Link>
+      <Link to='/'>
       <button className="button" type='click' onClick={() => logOut()} > Log Out </button>
+      </Link>
     </div>
 
     {/* Router routes */}
@@ -109,7 +102,7 @@ function App({getItems, getUser, user, toggleSearch}) {
 const mapStateToProps = ({store}) => {
   return {
     user: store.user,
-    searchBool: store.searchBool
+    searchVal: store.searchVal,
   };
 };
 
@@ -117,7 +110,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getItems: (action) => dispatch(action),
     getUser: (action) => dispatch(action),
-    toggleSearch: (action) => dispatch(action),
+    setSearchVal: (action) => dispatch(action),
   };
 };
 

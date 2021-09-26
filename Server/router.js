@@ -9,8 +9,6 @@ const authMiddleware = require('./middlewares/auth');
 router.get('/users', mainMethods.getUsers);
 //Get logged in user
 router.get('/me', authMiddleware, mainMethods.profile);
-//Get single user
-router.get('/usersById', mainMethods.getUserById);
 
 //Register new User
 router.post('/users', mainMethods.postUsers);
