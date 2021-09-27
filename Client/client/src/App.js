@@ -1,4 +1,4 @@
-import './App.css';
+import './styles/app.css';
 import { useState, useEffect } from 'react';
 import {
   BrowserRouter as Router,
@@ -55,10 +55,10 @@ function App({getItems, getUser, user, setSearchVal, searchVal}) {
       <Switch>
       <Route path="/" exact>
           <LoginPage setAuthenticated={setAuthenticated}></LoginPage>
-        </Route>
+      </Route>
       <Route path="/register" exact>
           <Register setAuthenticated={setAuthenticated}></Register>
-        </Route>
+      </Route>
       </Switch>
     </Router>
   );

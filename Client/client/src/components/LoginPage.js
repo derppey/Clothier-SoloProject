@@ -2,16 +2,18 @@ import React from 'react'
 import { useState } from 'react';
 import { Link } from "react-router-dom";
 import apiService from '../apiServices';
-// import auth from '../utils/auth';
+import '../styles/login.css';
 
 const initialState = {
   email: '',
   password: '',
 };
 
+
 export default function LogIn({setAuthenticated}) {
   const [userLogin, setUserLogin] = useState(initialState);
-
+  const Logo = '../utils/ClothierWideRed';
+  
   const handleEvent = (e) => {
     const { name, value } = e.target;
     setUserLogin((prevState) => ({
@@ -37,21 +39,24 @@ export default function LogIn({setAuthenticated}) {
   }
 
   return (
-    <div>
-      <div>
-      <h1>Log In: </ h1>
-      <form onSubmit={handleSubmit}>
-        <input type='text' required name='email' placeholder="Email" value={userLogin.email} onChange={handleEvent}/>
-        <input type='password' required placeholder='Password' name='password' value={userLogin.password} onChange={handleEvent}/>
-        <button className="button" type='submit'> Submit </button>
-      </form>
-      <button className="button" type='click'> Log In with Facebook </button>
-      <button className="button" type='click'> Log In with Google </button>
-      <Link to="/register">
-      <button className="button" type='click'> Register! </button>
-      </Link>
-
-    </div>
+    <div className='login-page is-flex is-justify-content-center'>
+      <div className='login-window box'>
+        <img src={Logo} alt="n/a"/>
+        <h1 className='title is-2'>Welcome to Clothier!</ h1>
+        <div className="field">
+          <form onSubmit={handleSubmit}>
+            <input className='mt-1 input' type='text' required name='email' placeholder="Email" value={userLogin.email} onChange={handleEvent}/>
+            <input className='mt-5 input' type='password' required placeholder='Password' name='password' value={userLogin.password} onChange={handleEvent}/>
+            <button className="mt-5 button is-primary" type='submit'> Log In </button>
+          </form>
+          {/* <button className="button" type='click'> Log In with Facebook </button>
+          <button className="button" type='click'> Log In with Google </button> */}
+          <h1 className='mt-3 title is-5'>New to Clothier?</ h1>
+          <Link to="/register">
+          <button className="mt-0 button is-link" type='click'> Register! </button>
+          </Link>
+        </div>
+      </div>
     </div>
   )
 }

@@ -1,0 +1,26 @@
+.login-page {
+  background: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.5)), to(rgba(255, 255, 255, 0.5))), url("../utils/MyPost.png") no-repeat center;
+  background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url("../utils/MyPost.png") no-repeat center;
+  height: 100vh;
+  width: 100vw;
+  background-size: cover;
+}
+
+.login-window {
+  width: 34%;
+  height: auto;
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+}
+
+.search-follow {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+/*# sourceMappingURL=login.css.map */

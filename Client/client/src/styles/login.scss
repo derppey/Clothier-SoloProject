@@ -1,0 +1,21 @@
+$loginBackground: url('../utils/MyPost.png');
+
+.login-page {
+  background:linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), $loginBackground no-repeat center;
+  height: 100vh;
+  width: 100vw;
+  background-size: cover;
+}
+
+.login-window{
+  width: 34%;
+  height: auto;
+  align-self: center;
+}
+
+.search-follow {
+  display: flex;
+  flex-wrap: wrap;
+  overflow-y: hidden;
+  overflow-x: auto;
+}
