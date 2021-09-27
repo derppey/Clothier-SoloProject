@@ -1,11 +1,21 @@
 .App {
   text-align: center;
+};
+
+.top-menu {
+  position: fixed;
+  align-content: center;
+  justify-content: space-evenly;
+  width: 100%;
 }
 
-.navbar {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  align-content: center;
-  background-color: rgb(3, 95, 126);
+.search-bar {
+  max-width: 60%;
+}
+
+.content {
+  padding-top: 15vh;
+  background-color: gainsboro;
+  max-width: 95vw;
+  justify-self: center;
 }

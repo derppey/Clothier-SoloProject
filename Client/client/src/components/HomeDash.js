@@ -1,33 +1,40 @@
 import React from 'react'
-import SearchResults from './SearchResults'
+import SearchResults from'./SearchResults'
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
 import actions from '../redux/actions';
-
+import { useState } from 'react';
+import '../styles/app.css';
 
 function HomeDash({items, searchVal, setSelectedItem}) {
-
-  if(searchVal) return (
-    <SearchResults></SearchResults>
-  )
+  
+  const [filter, setFilter] = useState('all');
+  
   if(!items) return (
     <div className="loading">Loading...</div>
-  )
+    )
+
+  const categories = ['Pants', 'Outerwear Pants and Sets', 'Coats & Outerwear', 'Hoodies & Sweatshirts', 'Sweaters', 'Shirts & Tops', 'Underwear & Intimates', 'Dresses', 'Jeans', 'Socks', 'Skirts', "Kids' Sets"]
+  const filteredItems = filter === 'all' ? items : items.filter((item) => item.category === filter)
   return (
-    <>
-    <div className="categoryScroll">
-      Categories:
+    <div>
+      {searchVal && <SearchResults></SearchResults>}
+      <div className="categories">
+        <button className="cat" onClick={() => setFilter('all')} >All</button>
+        {categories.map((item, index) =>
+          <button className="cat" key={index} onClick={() => setFilter(item)} >{item}</button>
+        )}
+      </div>
+      <div className="dashboardItems">
+        {filteredItems.map(item =>
+          <div key={item.primaryKey}>
+        <Link to="/itemDetail">
+            <img src={item.image} onClick={() => setSelectedItem(actions.getSingleItem(item))} alt="n/a"/>
+        </Link>
+          </div>
+        )}
+      </div>
     </div>
-    <div className="dashboardItems">
-      {items.map(item =>
-        <div key={item.primaryKey}>
-      <Link to="/itemDetail">
-          <img src={item.image} onClick={() => setSelectedItem(actions.getSingleItem(item))} alt="n/a"/>
-      </Link>
-        </div>
-      )}
-    </div>
-    </>
   )
 }
 

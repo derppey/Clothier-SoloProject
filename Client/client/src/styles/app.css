@@ -2,19 +2,25 @@
   text-align: center;
 }
 
-.navbar {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
+.top-menu {
+  position: fixed;
+  -ms-flex-line-pack: center;
+      align-content: center;
   -webkit-box-pack: space-evenly;
       -ms-flex-pack: space-evenly;
           justify-content: space-evenly;
-  -ms-flex-line-pack: center;
-      align-content: center;
-  background-color: #035f7e;
+  width: 100%;
+}
+
+.search-bar {
+  max-width: 60%;
+}
+
+.content {
+  padding-top: 15vh;
+  background-color: gainsboro;
+  max-width: 95vw;
+  -ms-grid-column-align: center;
+      justify-self: center;
 }
 /*# sourceMappingURL=app.css.map */

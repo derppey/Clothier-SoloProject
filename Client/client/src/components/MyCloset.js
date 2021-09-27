@@ -16,7 +16,6 @@ function MyCloset({user, searchVal, setSelectedItem}) {
   const ADQitems = user.ADQs;
   if (ADQitems) {
   const filteredItems = filter === 'all' ? ADQitems : ADQitems.filter((item) => item.item.category === filter)
-  console.log(filter, filteredItems);
   return (
     <div>
       MyCloset

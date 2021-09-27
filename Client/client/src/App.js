@@ -65,37 +65,41 @@ function App({getItems, getUser, user, setSearchVal, searchVal}) {
   
   //Logged In flow
   return (
-    <Router>
-    {/* NavBar   */}
-    <div className="navbar">
-      <Link to='/'>
-      <h1>Clothier</h1>
-      </Link>
-      <h1>Hi {user.firstName}</h1>
-      <form>
-        <input type="text" placeholder="🔍 Search" value={searchVal} onChange={handleEvent}/>
-      </form>
-      <Link to='/MyCloset'>
-      <button className="button" type='click'> MyCloset </button>
-      </Link>
-      <Link to='/'>
-      <button className="button" type='click' onClick={() => logOut()} > Log Out </button>
-      </Link>
-    </div>
+    <div className="body">
+      <Router>
+      {/* NavBar   */}
+      <nav className="top-menu navbar pt-4">
+        <div className="navbar-brand">
+          <Link to='/'>
+            <img src="utils/ClothierWideRed.png" alt="Clothier" />
+          </Link>
+        </div>
+        <h1 className='title '>Hi {user.firstName}! </h1>
+        <input className='input is-rounded search-bar' type="text" placeholder="🔍 Search" value={searchVal} onChange={handleEvent}/>
+        <Link to='/MyCloset'>
+        <button className="button is-info is-rounded" type='click'> MyCloset </button>
+        </Link>
+        <Link to='/'>
+        <button className="button is-warning is-rounded" type='click' onClick={() => logOut()} > Log Out </button>
+        </Link>
+      </nav>
 
-    {/* Router routes */}
-      <Switch>
-        <Route path="/" exact>
-          <HomeDash></HomeDash>
-        </Route>
-        <Route path="/itemDetail" exact>
-          <ItemDetail></ItemDetail>
-        </Route>
-        <Route path="/MyCloset" exact>
-          <MyCloset></MyCloset>
-        </Route>
-      </Switch>
-    </Router>
+      {/* Router routes */}
+      <div className='content'>
+        <Switch>
+          <Route path="/" exact>
+            <HomeDash></HomeDash>
+          </Route>
+          <Route path="/itemDetail" exact>
+            <ItemDetail></ItemDetail>
+          </Route>
+          <Route path="/MyCloset" exact>
+            <MyCloset></MyCloset>
+          </Route>
+        </Switch>
+      </div>
+      </Router>
+    </div>
   )
 }
 

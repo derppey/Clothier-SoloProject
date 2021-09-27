@@ -47,13 +47,13 @@ export default function LogIn({setAuthenticated}) {
           <form onSubmit={handleSubmit}>
             <input className='mt-1 input' type='text' required name='email' placeholder="Email" value={userLogin.email} onChange={handleEvent}/>
             <input className='mt-5 input' type='password' required placeholder='Password' name='password' value={userLogin.password} onChange={handleEvent}/>
-            <button className="mt-5 button is-primary" type='submit'> Log In </button>
+            <button className="mt-5 button is-primary is-rounded" type='submit'> Log In </button>
           </form>
           {/* <button className="button" type='click'> Log In with Facebook </button>
           <button className="button" type='click'> Log In with Google </button> */}
           <h1 className='mt-3 title is-5'>New to Clothier?</ h1>
           <Link to="/register">
-          <button className="mt-0 button is-link" type='click'> Register! </button>
+          <button className="mt-0 button is-link is-rounded" type='click'> Register! </button>
           </Link>
         </div>
       </div>

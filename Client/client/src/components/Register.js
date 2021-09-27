@@ -90,10 +90,10 @@ function Register({setAuthenticated, items}) {
             </ h1>
             <div className="field has-addons">
               <div className="control">
-                <input className="input" type="text" placeholder="🔍 Search" value={regSearchVal} onChange={handleChange2}/>
+                <input className="input is-rounded" type="text" placeholder="🔍 Search" value={regSearchVal} onChange={handleChange2}/>
               </div>
               <div className="control">
-                <button className="button is-info" type='click' onClick={() => {setRegistryStep(3)}} > Next </button>
+                <button className="button is-info is-rounded" type='click' onClick={() => {setRegistryStep(3)}} > Next </button>
               </div>
             </div>
             <div className='search-follow'>
@@ -102,7 +102,7 @@ function Register({setAuthenticated, items}) {
                 <h4 className='title is-4'>{user.username}</h4>
                 {followed.includes(user.primaryKey) 
                   ? <h6>Following</h6>
-                  : <button className='button is-success' onClick={() => followUser(user.primaryKey)}>Follow</button>
+                  : <button className='button is-success is-rounded' onClick={() => followUser(user.primaryKey)}>Follow</button>
                 }
               </div>
               )}
@@ -118,7 +118,7 @@ function Register({setAuthenticated, items}) {
               Registration succesful!
             </ h1>
             <Link to="/">
-              <button className="button is-success" type='click' onClick={() => {LogInhandleSubmit()}}> Finish </button>
+              <button className="button is-success is-rounded" type='click' onClick={() => {LogInhandleSubmit()}}> Finish </button>
             </Link>
           </div>
         </div>
@@ -179,7 +179,7 @@ function Register({setAuthenticated, items}) {
                   onChange={handleChange}
                   className='mt-1 input'
                 />
-                <button className="mt-4 button is-primary" type='submit'> Next </button>
+                <button className="mt-4 button is-primary is-rounded" type='submit'> Next </button>
               </form>
             </div>
           </div>
