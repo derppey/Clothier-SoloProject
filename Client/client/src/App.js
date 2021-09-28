@@ -10,10 +10,12 @@ import HomeDash from './components/HomeDash';
 import Register from './components/Register';
 import ItemDetail from './components/ItemDetail';
 import MyCloset from './components/MyCloset';
+import UserCloset from './components/UserCloset';
 import LoginPage from './components/LoginPage';
 import actions from './redux/actions';
 import { connect } from 'react-redux';
 import apiService from './apiServices';
+import logo from './utils/ClothierLiteCrop.png'
 
 function App({getItems, getUser, user, setSearchVal, searchVal}) {
   const [authenticated, setAuthenticated] = useState(false);
@@ -68,19 +70,21 @@ function App({getItems, getUser, user, setSearchVal, searchVal}) {
     <div className="body">
       <Router>
       {/* NavBar   */}
-      <nav className="top-menu navbar pt-4">
-        <div className="navbar-brand">
+      <nav className="top-menu navbar is-fixed-top pt-2">
+        <div className="navbar-brand m-0">
           <Link to='/'>
-            <img src="utils/ClothierWideRed.png" alt="Clothier" />
+            <img className='navbar-item logo m-0' src={`${logo}`} alt="Clothier" />
           </Link>
         </div>
-        <h1 className='title '>Hi {user.firstName}! </h1>
-        <input className='input is-rounded search-bar' type="text" placeholder="🔍 Search" value={searchVal} onChange={handleEvent}/>
+        <div className="navbar-item">
+          <h1 className='title is-4 m-0'>Hi {user.firstName}! </h1>
+        </div>
+        <input className='navbar-item input is-rounded search-bar' type="text" placeholder="🔍 Search" value={searchVal} onChange={handleEvent}/>
         <Link to='/MyCloset'>
-        <button className="button is-info is-rounded" type='click'> MyCloset </button>
+        <button className="nav-button navbar-item button is-info is-rounded" type='click'> MyCloset </button>
         </Link>
         <Link to='/'>
-        <button className="button is-warning is-rounded" type='click' onClick={() => logOut()} > Log Out </button>
+        <button className="nav-button navbar-item button is-warning is-rounded" type='click' onClick={() => logOut()} > Log Out </button>
         </Link>
       </nav>
 
@@ -95,6 +99,9 @@ function App({getItems, getUser, user, setSearchVal, searchVal}) {
           </Route>
           <Route path="/MyCloset" exact>
             <MyCloset></MyCloset>
+          </Route>
+          <Route path="/UserCloset" exact>
+            <UserCloset></UserCloset>
           </Route>
         </Switch>
       </div>

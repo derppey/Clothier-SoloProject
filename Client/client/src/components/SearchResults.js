@@ -6,7 +6,7 @@ import apiService from '../apiServices';
 import { Link } from "react-router-dom";
 
 
-function SearchResults({items, searchVal, user, setSearchVal, setSelectedItem}) {
+function SearchResults({items, searchVal, user, setSearchVal, setSelectedItem, setSelectedUser}) {
   
   const [usersArr, setUsersArr] = useState([]);
   const [followed, setFollowed] = useState(user.Follows.map((user) => user.userPrimaryKey))
@@ -19,7 +19,6 @@ function SearchResults({items, searchVal, user, setSearchVal, setSelectedItem}) 
   async function getUsers() {
     setUsersArr(await apiService.getUsers());
   }
-  
   const followUser = async (currentUserId) => {
     const res = await apiService.follow(user.primaryKey, currentUserId);
     if (res.error) console.log('No user info found');
@@ -30,36 +29,44 @@ function SearchResults({items, searchVal, user, setSearchVal, setSelectedItem}) 
     setSearchVal(actions.setSearchVal(''));
     setSelectedItem(actions.getSingleItem(item))
   }
+
+  function selectUser(user) {
+    setSelectedUser(actions.setSelectedUser(user));
+    setSearchVal(actions.setSearchVal(''))
+  }
   
   if (usersArr && items) {
     const filteredItems = items.filter((item) => re.test(item.category))
     const filteredUsers = usersArr.filter((user) => re.test(user.username))
     return (
-      <div>
-        <h1>Results:</h1>
-        <div className="peopleSearch">
+      <div className='columns'>
+        <div className="column">
           <h2>People:</h2>
-          {/* map through filtered users, i need name lastName and ID, with each map set a button to Follow */}
-          {filteredUsers.map(user =>
-            <div key={user.primaryKey}>
-              <h4>{user.username}</h4>
-              {followed.includes(user.primaryKey) 
-                ? <h6>Following</h6>
-                : <button onClick={() => followUser(user.primaryKey)}>Follow</button>
-              }
-            </div>
-          )}
-        </div>
-        <div className="itemsSearch">
-          <h2>Items:</h2>
-          {/* map through filtered items, i need name lastName and ID, with each map set a link te send to ItemPage */}
-          {filteredItems.map(item =>
-          <div key={item.primaryKey}>
-            <Link to="/itemDetail" onClick={() => setItem(item)}>
-              <img src={item.image} alt="n/a" />
-            </Link>
+          <div className='search-follow'>
+            {filteredUsers.map(user =>
+              <div className='box m-1' key={user.primaryKey}>
+                <Link to='/UserCloset' key={user.primaryKey}>
+                  <h4 className='title is-4' onClick={()=>{selectUser(user)}}>{user.username}</h4>
+                </Link>
+                {followed.includes(user.primaryKey) 
+                  ? <h6>Following</h6>
+                  : <button className='button is-success is-rounded' onClick={() => followUser(user.primaryKey)}>Follow</button>
+                }
+              </div>
+            )}
           </div>
-        )}
+        </div>
+        <div className="column">
+          <h2>Items:</h2>
+          <div className='search-follow'>
+            {filteredItems.map(item =>
+              <div className='box search-item-box m-1' key={item.primaryKey}>
+                <Link to="/itemDetail" onClick={() => setItem(item)}>
+                  <img src={item.image} alt="n/a"/>
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     )
@@ -78,7 +85,8 @@ const mapStateToProps = ({store}) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setSearchVal: (action) => dispatch(action),
-    setSelectedItem: (action) => dispatch(action)
+    setSelectedItem: (action) => dispatch(action),
+    setSelectedUser: (action) => dispatch(action),
   };
 };
 

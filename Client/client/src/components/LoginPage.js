@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { Link } from "react-router-dom";
 import apiService from '../apiServices';
 import '../styles/login.css';
+import logo from '../utils/ClothierWideRed.png'
+
 
 const initialState = {
   email: '',
@@ -12,7 +14,6 @@ const initialState = {
 
 export default function LogIn({setAuthenticated}) {
   const [userLogin, setUserLogin] = useState(initialState);
-  const Logo = '../utils/ClothierWideRed';
   
   const handleEvent = (e) => {
     const { name, value } = e.target;
@@ -40,9 +41,9 @@ export default function LogIn({setAuthenticated}) {
 
   return (
     <div className='login-page is-flex is-justify-content-center'>
+      <img className='logo' src={`${logo}`} alt="n/a"/>
       <div className='login-window box'>
-        <img src={Logo} alt="n/a"/>
-        <h1 className='title is-2'>Welcome to Clothier!</ h1>
+        <h1 className='title is-3'>Welcome to Clothier!</ h1>
         <div className="field">
           <form onSubmit={handleSubmit}>
             <input className='mt-1 input' type='text' required name='email' placeholder="Email" value={userLogin.email} onChange={handleEvent}/>

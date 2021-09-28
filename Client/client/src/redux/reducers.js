@@ -5,6 +5,7 @@ const initialState = {
   user: {},
   searchVal: '',
   selectedItem: {},
+  selectedUser: {}
 }
 
 const store = (state = initialState, action) => {
@@ -28,6 +29,11 @@ const store = (state = initialState, action) => {
       return {
         ...state,
         searchVal: action.payload
+      };
+    case 'setSelectedUser':
+      return {
+        ...state,
+        selectedUser: action.payload
       };
     default:
       return state;

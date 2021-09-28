@@ -98,7 +98,7 @@ function Register({setAuthenticated, items}) {
             </div>
             <div className='search-follow'>
             {filteredUsers.map(user =>
-              <div className='box' key={user.primaryKey}>
+              <div className='box m-1' key={user.primaryKey}>
                 <h4 className='title is-4'>{user.username}</h4>
                 {followed.includes(user.primaryKey) 
                   ? <h6>Following</h6>

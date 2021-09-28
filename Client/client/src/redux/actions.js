@@ -15,6 +15,10 @@ const actions = {
     type: 'setSearchVal',
     payload: item
   }),
+  setSelectedUser : (user) => ({
+    type: 'setSelectedUser',
+    payload: user
+  }),
 };
 
 export default actions;

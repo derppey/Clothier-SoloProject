@@ -4,6 +4,10 @@
   height: 100vh;
   width: 100vw;
   background-size: cover;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
 
 .login-window {
@@ -22,5 +26,13 @@
       flex-wrap: wrap;
   overflow-y: hidden;
   overflow-x: auto;
+}
+
+.logo {
+  max-width: 350px;
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+  margin-bottom: 20px;
 }
 /*# sourceMappingURL=login.css.map */

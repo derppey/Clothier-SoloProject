@@ -12,7 +12,17 @@ const SECRET_KEY = process.env.SECRET_KEY;
 exports.getUsers = async function (ctx) {
   try {
     ctx.body = await db.users.findAll({
-      attributes: ['firstName', 'lastName', 'username', 'primaryKey']
+      include: [
+        {
+        model: db.ADQ,
+        attributes: ['itemPrimaryKey'],
+        include: {
+          model: db.items,
+          attributes: ['title', 'category', 'brand', 'image', 'productId', 'productUrl', 'primaryKey']
+          },
+        }
+      ],
+      attributes: ['firstName', 'lastName', 'primaryKey', 'username']
     }); 
     ctx.status = 200;
   } catch (err) {
