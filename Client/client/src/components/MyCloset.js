@@ -2,11 +2,12 @@ import React from 'react'
 import SearchResults from './SearchResults'
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import actions from '../redux/actions';
 import '../styles/app.css';
+import fetchService from '../fetchService';
 
-function MyCloset({user, searchVal, setSelectedItem}) {
+function MyCloset({user, searchVal, setSelectedItem, getUser, getItems}) {
   const ADQitems = user.ADQs;
   const userCategories = [...new Set(user.ADQs.map((item) => item.item.category))];
   const initialState = userCategories.map(category => {return {category: category, isActive: ''}})
@@ -14,7 +15,19 @@ function MyCloset({user, searchVal, setSelectedItem}) {
   const [all, setAll] = useState({category: 'all', isActive: 'is-active'});
   const [filter, setFilter] = useState('all');
   const [categories, setCategories] = useState(initialState);
-  const [prevIndex, setPrevIndex] = useState(null)
+  const [prevIndex, setPrevIndex] = useState(null);
+
+  useEffect(() => {
+    async function fetchData () {
+      const {itemArr, userInfo} = await fetchService(accessToken);
+      getItems(actions.getItems(itemArr));
+      getUser(actions.getUser(userInfo));
+    }
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken) {
+      fetchData();
+    }
+  }, []);
 
   function handleClick(cat, index) {
     setAll({...all, isActive:''})
@@ -35,10 +48,9 @@ function MyCloset({user, searchVal, setSelectedItem}) {
   }
 
   if (ADQitems) {
-    const filteredItems = filter === 'all' ? ADQitems : ADQitems.filter((item) => item.item.category === filter)
+    const filteredItems = filter === 'all' ? ADQitems : ADQitems.filter((item) => item.item.category === filter);
     const length = filteredItems.length;
     const quarter = length===1 ? 4 : Math.ceil(length/4);
-    console.log(filteredItems);
     return (
       <div>
         {searchVal && 
@@ -62,36 +74,36 @@ function MyCloset({user, searchVal, setSelectedItem}) {
           <div className="dashboardItems tile is-ancestor">
             <div className="tile is-3 is-vertical pt-2">
               {filteredItems.slice(0, quarter).map(item =>
-                <div className='tile is-child box item-box' key={item.primaryKey}>
-                  <Link to="/itemDetail">
-                    <img src={item.item.image} onClick={() => setSelectedItem(actions.getSingleItem(item))} alt="n/a"/>
+                <div className='tile is-child box item-box' key={item.itemPrimaryKey}>
+                  <Link to={`/itemDetail/${item.itemPrimaryKey}`}>
+                    <img src={item.item.image} alt="n/a"/>
                   </Link>
             </div>
             )}
             </div>
             <div className="tile is-3 is-vertical">
               {filteredItems.slice(quarter, quarter*2).map(item =>
-                <div className='tile is-child box item-box' key={item.primaryKey}>
-                  <Link to="/itemDetail">
-                    <img src={item.item.image} onClick={() => setSelectedItem(actions.getSingleItem(item))} alt="n/a"/>
+                <div className='tile is-child box item-box' key={item.itemPrimaryKey}>
+                  <Link to={`/itemDetail/${item.itemPrimaryKey}`}>
+                    <img src={item.item.image} alt="n/a"/>
                   </Link>
                 </div>
               )}
             </div>
             <div className="tile is-3 is-vertical pt-3">
               {filteredItems.slice((quarter*2), quarter*3).map(item =>
-                  <div className='tile is-child box item-box' key={item.primaryKey}>
-                    <Link to="/itemDetail">
-                      <img src={item.item.image} onClick={() => setSelectedItem(actions.getSingleItem(item))} alt="n/a"/>
+                  <div className='tile is-child box item-box' key={item.itemPrimaryKey}>
+                    <Link to={`/itemDetail/${item.itemPrimaryKey}`}>
+                      <img src={item.item.image} alt="n/a"/>
                     </Link>
                   </div>
                 )}
             </div>
             <div className="tile is-3 is-vertical">
               {filteredItems.slice((quarter*3)).map(item =>
-                  <div className='tile is-child box item-box' key={item.primaryKey}>
-                    <Link to="/itemDetail">
-                      <img src={item.item.image} onClick={() => setSelectedItem(actions.getSingleItem(item))} alt="n/a"/>
+                  <div className='tile is-child box item-box' key={item.itemPrimaryKey}>
+                    <Link to={`/itemDetail/${item.itemPrimaryKey}`}>
+                      <img src={item.item.image} alt="n/a"/>
                     </Link>
                   </div>
                 )}
@@ -112,7 +124,9 @@ const mapStateToProps = ({store}) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setSelectedItem: (action) => dispatch(action)
+    setSelectedItem: (action) => dispatch(action),
+    getItems: (action) => dispatch(action),
+    getUser: (action) => dispatch(action),
   };
 };
 

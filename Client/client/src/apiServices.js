@@ -1,4 +1,9 @@
-const baseURL = 'http://localhost:3001';
+// require('dotenv').config();
+const baseURL = process.env.REACT_APP_BASE_URL;
+console.log(baseURL);
+// import baseURL from './'
+
+// const baseURL = 'http://localhost:3001';
 
 const apiService = {};
 
@@ -23,14 +28,14 @@ apiService.login = (user) => {
     .catch((err) => console.log(err))
 }
 
-apiService.profile = (accessToken) => {
+apiService.profile = (accessToken, tokenType) => {
   return fetch(`${baseURL}/me`, {
     method: 'GET',
     credentials: 'include',
     mode: 'cors',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `${tokenType} ${accessToken}`,
     },
   })
     .then((res) => res.json())
@@ -97,6 +102,22 @@ apiService.ADQ = (UserId, ItemId) => {
     .catch((err) => console.log(err));
 };
 
+apiService.fetchOneItem = (id) => {
+  const result = fetch(baseURL+'/OneItem', {
+    method: 'POST',
+    credentials: 'include',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      ItemId: id,
+    })
+  })
+  .then(response => response.json())
+  .catch(err => console.log(err));
+  return result;
+}
 
 
 

@@ -106,6 +106,21 @@ exports.getItems = async function (ctx) {
   }
 };
 
+exports.getOneItem = async function (ctx) {
+  const id = ctx.request.body.ItemId;
+  try {
+    const body = await db.items.findOne({
+      where: { primaryKey: id },
+      attributes: ['title', 'category', 'brand', 'image', 'productId', 'productUrl', 'primaryKey', 'createdAt']
+    }); 
+    ctx.status = 200;
+    ctx.body = body;
+  } catch (err) {
+    ctx.body = err;
+    ctx.status = 500;
+  }
+};
+
 exports.postItems = async ctx => {
   const body = ctx.request.body;
   try {

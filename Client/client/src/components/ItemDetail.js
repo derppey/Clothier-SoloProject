@@ -1,18 +1,26 @@
 import React from 'react'
 import SearchResults from './SearchResults'
 import { connect } from 'react-redux';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import apiService from '../apiServices';
 import '../styles/app.css';
 import { ExternalLink } from 'react-external-link';
 import actions from '../redux/actions';
-import { Link } from "react-router-dom";
-
-
-
+import { Link, useParams } from "react-router-dom";
+// import fetchService from '../fetchService';
 
 function ItemDetail({searchVal, selectedItem, user, setSelectedItem, items}) {
-  const [acquired, setAcquired] = useState(user.ADQs.map((item) => item.itemPrimaryKey))
+  const [acquired, setAcquired] = useState(user.ADQs.map((item) => item.itemPrimaryKey));
+  const [toggle, setToggle] = useState(false);
+  const { itemId } = useParams();
+
+  useEffect(() => {
+    getItem(itemId);
+  }, [toggle]);
+
+  async function getItem (itemId) {
+    setSelectedItem(actions.getSingleItem(await apiService.fetchOneItem(itemId)));
+  }
 
   async function acquireItem () {
     await apiService.ADQ(user.primaryKey, selectedItem.primaryKey);
@@ -20,7 +28,6 @@ function ItemDetail({searchVal, selectedItem, user, setSelectedItem, items}) {
   }
   const userItems = user.ADQs.filter(item => item.item.category === selectedItem.category);
   const filteredItems = items.filter(item => item.category === selectedItem.category);
-  
   return (
     <div className='content item'>
       {searchVal && 
@@ -51,8 +58,8 @@ function ItemDetail({searchVal, selectedItem, user, setSelectedItem, items}) {
           <h1 className="title is-5">Similar clothes in your Closet:</h1>
           <div className='search-follow'>
             {userItems.map(item =>
-              <div className='box search-item-box m-1' key={item.primaryKey}>
-                <Link to="/itemDetail" onClick={() => setSelectedItem(actions.getSingleItem(item))}>
+              <div className='box search-item-box m-1' key={item.itemPrimaryKey}>
+                <Link to={`/itemDetail/${item.itemPrimaryKey}`} onClick={() => setToggle(!toggle)}>
                   <img src={item.item.image} alt="n/a" />
                 </Link>
               </div>
@@ -64,7 +71,7 @@ function ItemDetail({searchVal, selectedItem, user, setSelectedItem, items}) {
           <div className='search-follow'>
             {filteredItems.map(item =>
               <div className='box search-item-box m-1' key={item.primaryKey}>
-                <Link to="/itemDetail" onClick={() => setSelectedItem(actions.getSingleItem(item))}>
+                <Link to={`/itemDetail/${item.primaryKey}`} onClick={() => setToggle(!toggle)}>
                   <img src={item.image} alt="n/a" />
                 </Link>
               </div>

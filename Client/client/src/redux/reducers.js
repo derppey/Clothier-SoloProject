@@ -2,10 +2,16 @@ import { combineReducers } from 'redux';
 
 const initialState = {
   items: [],
-  user: {},
+  user: {
+    ADQs: [],
+    Follows: []
+  },
   searchVal: '',
   selectedItem: {},
-  selectedUser: {}
+  selectedUser: {
+    ADQs: [],
+    Follows: []
+  },
 }
 
 const store = (state = initialState, action) => {

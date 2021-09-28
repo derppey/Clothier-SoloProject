@@ -61,7 +61,7 @@ function HomeDash({items, searchVal, setSelectedItem}) {
         <div className="tile is-3 is-vertical pt-2">
           {filteredItems.slice(0, quarter).map(item =>
             <div className='tile is-child box item-box' key={item.primaryKey}>
-              <Link to="/itemDetail">
+              <Link to={`/itemDetail/${item.primaryKey}`}>
                 <img src={item.image} onClick={() => setSelectedItem(actions.getSingleItem(item))} alt="n/a"/>
               </Link>
         </div>
@@ -70,7 +70,7 @@ function HomeDash({items, searchVal, setSelectedItem}) {
         <div className="tile is-3 is-vertical">
           {filteredItems.slice(quarter, quarter*2).map(item =>
             <div className='tile is-child box item-box' key={item.primaryKey}>
-              <Link to="/itemDetail">
+              <Link to={`/itemDetail/${item.primaryKey}`}>
                 <img src={item.image} onClick={() => setSelectedItem(actions.getSingleItem(item))} alt="n/a"/>
               </Link>
             </div>
@@ -79,7 +79,7 @@ function HomeDash({items, searchVal, setSelectedItem}) {
         <div className="tile is-3 is-vertical pt-3">
           {filteredItems.slice((quarter*2), quarter*3).map(item =>
               <div className='tile is-child box item-box' key={item.primaryKey}>
-                <Link to="/itemDetail">
+                <Link to={`/itemDetail/${item.primaryKey}`}>
                   <img src={item.image} onClick={() => setSelectedItem(actions.getSingleItem(item))} alt="n/a"/>
                 </Link>
               </div>
@@ -88,7 +88,7 @@ function HomeDash({items, searchVal, setSelectedItem}) {
         <div className="tile is-3 is-vertical">
           {filteredItems.slice((quarter*3)).map(item =>
               <div className='tile is-child box item-box' key={item.primaryKey}>
-                <Link to="/itemDetail">
+                <Link to={`/itemDetail/${item.primaryKey}`}>
                   <img src={item.image} onClick={() => setSelectedItem(actions.getSingleItem(item))} alt="n/a"/>
                 </Link>
               </div>

@@ -17,6 +17,8 @@ router.post('/users', mainMethods.postUsers);
 router.get('/items', mainMethods.getItems);
 //Register new items
 router.post('/items', mainMethods.postItems);
+//get One item
+router.post('/OneItem', mainMethods.getOneItem);
 
 //Get all adquisitions
 router.get('/adq', mainMethods.getADQ);

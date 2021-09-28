@@ -1,18 +1,20 @@
-// REMOVE-START
 const jwt = require('jsonwebtoken');
 const SECRET_KEY = process.env.SECRET_KEY;
 const db = require('../models/index');
 const mainMethods = require('../controllers/mainMethods');
 
 
-// REMOVE-END
 
 const authMiddleware = async (ctx, next) => {
   const authHeaders = ctx.request.headers['authorization'];
   if (!authHeaders) return ctx.status = 403;
+  const tokenType = authHeaders.split(' ')[0];
   const token = authHeaders.split(' ')[1];
   try {
-    const { _id } = jwt.verify(token, SECRET_KEY);
+    let id;
+    if (tokenType === 'Bearer') id = jwt.verify(token, SECRET_KEY);
+    if (tokenType === 'id') id = {_id: token};
+    const _id = id._id;
     const user = await mainMethods.getUserById(_id);
     if (!user) return ctx.status = 401;
     ctx.request.user = user;
@@ -20,7 +22,6 @@ const authMiddleware = async (ctx, next) => {
   } catch (error) {
     ctx.status = 401;
   }
-  // REMOVE-END
 };
 
 module.exports = authMiddleware;

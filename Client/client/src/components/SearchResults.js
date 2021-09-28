@@ -5,10 +5,12 @@ import { useState, useEffect } from 'react';
 import apiService from '../apiServices';
 import { Link } from "react-router-dom";
 import '../styles/app.css';
+import fetchService from '../fetchService'
 
 
 
-function SearchResults({items, searchVal, user, setSearchVal, setSelectedItem, setSelectedUser}) {
+
+function SearchResults({items, searchVal, user, setSearchVal, setSelectedItem, setSelectedUser, getItems, getUser}) {
   
   const [usersArr, setUsersArr] = useState([]);
   const [followed, setFollowed] = useState(user.Follows.map((user) => user.userPrimaryKey))
@@ -16,7 +18,17 @@ function SearchResults({items, searchVal, user, setSearchVal, setSelectedItem, s
   
   useEffect(() => {
     getUsers();
+    async function fetchData () {
+      const {itemArr, userInfo} = await fetchService(accessToken);
+      getItems(actions.getItems(itemArr));
+      getUser(actions.getUser(userInfo));
+    }
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken) {
+      fetchData();
+    }
   }, []);
+    
   
   async function getUsers() {
     setUsersArr(await apiService.getUsers());
@@ -33,8 +45,8 @@ function SearchResults({items, searchVal, user, setSearchVal, setSelectedItem, s
   }
 
   function selectUser(user) {
-    setSelectedUser(actions.setSelectedUser(user));
     setSearchVal(actions.setSearchVal(''))
+    setSelectedUser(actions.setSelectedUser(user));
   }
   
   if (usersArr && items) {
@@ -47,7 +59,7 @@ function SearchResults({items, searchVal, user, setSearchVal, setSelectedItem, s
           <div className='search-follow'>
             {filteredUsers.map(user =>
               <div className='box m-1' key={user.primaryKey}>
-                <Link to='/UserCloset' key={user.primaryKey}>
+                <Link to={`/UserCloset/${user.primaryKey}`} key={user.primaryKey}>
                   <h4 className='title is-4' onClick={()=>{selectUser(user)}}>{user.username}</h4>
                 </Link>
                 {followed.includes(user.primaryKey) 
@@ -63,7 +75,7 @@ function SearchResults({items, searchVal, user, setSearchVal, setSelectedItem, s
           <div className='search-follow'>
             {filteredItems.map(item =>
               <div className='box search-item-box m-1' key={item.primaryKey}>
-                <Link to="/itemDetail" onClick={() => setItem(item)}>
+                <Link to={`/itemDetail/${item.primaryKey}`} onClick={() => setItem(item)}>
                   <img src={item.image} alt="n/a"/>
                 </Link>
               </div>
@@ -89,6 +101,8 @@ const mapDispatchToProps = (dispatch) => {
     setSearchVal: (action) => dispatch(action),
     setSelectedItem: (action) => dispatch(action),
     setSelectedUser: (action) => dispatch(action),
+    getItems: (action) => dispatch(action),
+    getUser: (action) => dispatch(action),
   };
 };
 
