@@ -4,6 +4,8 @@ import actions from '../redux/actions';
 import { useState, useEffect } from 'react';
 import apiService from '../apiServices';
 import { Link } from "react-router-dom";
+import '../styles/app.css';
+
 
 
 function SearchResults({items, searchVal, user, setSearchVal, setSelectedItem, setSelectedUser}) {

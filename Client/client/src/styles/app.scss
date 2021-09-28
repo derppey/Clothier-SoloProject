@@ -64,6 +64,7 @@
   opacity: 0.9;
   padding: 1em;
   max-width: 75%;
+  z-index: 5;
 }
 
 .search-follow {
@@ -71,3 +72,25 @@
   display: flex;
 }
 
+.item {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  align-content: center;
+  padding-top: 2.5%;
+  padding-bottom: 5%;
+}
+
+.item-detail {
+  align-self: center;
+  max-width: 800px;
+  max-height: 400px;
+  border-radius: 1.5rem;
+}
+
+.item-related {
+  align-self: center;
+  border-radius: 1.5rem;
+  margin: 10px;
+  width: 90%;
+}
