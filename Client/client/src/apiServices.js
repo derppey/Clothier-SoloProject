@@ -1,5 +1,5 @@
 // require('dotenv').config();
-const baseURL = process.env.REACT_APP_BASE_URL;
+const baseURL = 'http://localhost:3001';//process.env.REACT_APP_BASE_URL;
 console.log(baseURL);
 // import baseURL from './'
 
@@ -42,16 +42,17 @@ apiService.profile = (accessToken, tokenType) => {
     .catch((err) => console.log(err));
 };
 
-apiService.register = (newUser) => {
-  return fetch(`${baseURL}/users`, {
+apiService.register = async (newUser) => {
+  const res = await fetch(`${baseURL}/users`, {
     method: 'POST',
     credentials: 'include',
     mode: 'cors',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(newUser),
   })
-    .then((res) => (res.json()))
-    .catch((err) => console.log(err))
+
+  const data = await res.json();
+  return data;
 }
 
 apiService.getUsers = (accessToken) => {
