@@ -1,10 +1,10 @@
 import React from 'react'
-import SearchResults from'./SearchResults'
+import SearchResults from'../SearchResults'
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
-import actions from '../redux/actions';
+import actions from '../../redux/actions';
 import { useState } from 'react';
-import '../styles/app.css';
+import '../../styles/app.css';
 
 const catArr = ['Pants', 'Outerwear Pants and Sets', 'Coats & Outerwear', 'Hoodies & Sweatshirts', 'Sweaters', 'Shirts & Tops', 'Underwear & Intimates', 'Dresses', 'Jeans', 'Socks', 'Skirts', "Kids' Sets"]
 const initialState = catArr.map(category => {return {category: category, isActive: ''}})
