@@ -5,10 +5,10 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import HomeDash from './components/HomeDash';
+import HomeDash from './components/HomeDash/HomeDash';
 import Register from './components/Register';
 import ItemDetail from './components/ItemDetailsTest/ItemDetail';
-import MyCloset from './components/MyCloset';
+import MyCloset from './components/MyCloset/MyCloset';
 import UserCloset from './components/UserCloset';
 import LoginPage from './components/LoginPage';
 import actions from './redux/actions';
