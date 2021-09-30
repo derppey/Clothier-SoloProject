@@ -1,7 +1,6 @@
 'use strict';
 
 const db = require('../models/index');
-const fetchReq = require('./zapposDBmethods')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
@@ -210,8 +209,8 @@ exports.login = async (ctx) => {
 
 //The following code is just to get the items from Zappos Api in order to populate the DB
 
-const { zapposProductList } = require('../tempDb')
-const results = zapposProductList.results;
+//const { zapposProductList } = require('../tempDb')
+//const results = zapposProductList.results;
 var axios = require("axios").default;
 let resultsFiltered;
 
