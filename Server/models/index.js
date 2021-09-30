@@ -82,3 +82,7 @@ db.Follows.belongsTo(db.users);
 
 
 module.exports = db;
+
+
+
+const data = {}

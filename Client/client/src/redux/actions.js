@@ -9,7 +9,7 @@ const actions = {
   }),
   getSingleItem : (item) => ({
     type: 'getSingleItem',
-    payload: item
+    payload: item,
   }),
   setSearchVal : (item) => ({
     type: 'setSearchVal',
