@@ -1,9 +1,9 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
-import apiService from '../apiServices';
+import apiService from '../../apiServices';
 import { connect } from 'react-redux';
-import '../styles/login.css';
+import '../../styles/login.css';
 
 const initialState = {
   email: '',
