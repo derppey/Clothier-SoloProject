@@ -1,14 +1,13 @@
 import './styles/app.css';
 import { useState, useEffect } from 'react';
 import {
-  BrowserRouter as Router,
   Switch,
   Route,
   Link
 } from "react-router-dom";
 import HomeDash from './components/HomeDash';
 import Register from './components/Register';
-import ItemDetail from './components/ItemDetail';
+import ItemDetail from './components/ItemDetailsTest/ItemDetail';
 import MyCloset from './components/MyCloset';
 import UserCloset from './components/UserCloset';
 import LoginPage from './components/LoginPage';
@@ -47,7 +46,7 @@ function App({getItems, getUser, user, setSearchVal, searchVal}) {
 
   //LogIn and registration flow:
   if (!authenticated) return (
-    <Router>
+    
       <Switch>
       <Route path="/" exact>
           <LoginPage setAuthenticated={setAuthenticated}></LoginPage>
@@ -56,13 +55,13 @@ function App({getItems, getUser, user, setSearchVal, searchVal}) {
           <Register setAuthenticated={setAuthenticated}></Register>
       </Route>
       </Switch>
-    </Router>
+   
   );
   
   //Logged In flow
   return (
     <div className="body">
-      <Router>
+      
       {/* NavBar   */}
       <nav className="top-menu navbar is-fixed-top pt-2">
         <div className="navbar-brand m-0">
@@ -101,7 +100,6 @@ function App({getItems, getUser, user, setSearchVal, searchVal}) {
         </Switch>
       </div>
       }
-      </Router>
     </div>
   )
 }
