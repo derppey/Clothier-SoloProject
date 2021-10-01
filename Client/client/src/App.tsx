@@ -17,8 +17,16 @@ import { connect } from 'react-redux';
 import logo from './utils/ClothierLiteCrop.png'
 import fetchService from './fetchService'
 
-function App({getItems, getUser, user, setSearchVal, searchVal}) {
-  const [authenticated, setAuthenticated] = useState(false);
+interface props {
+  getItems: Function
+  getUser: Function
+   user: []
+   setSearchVal: Function
+    searchVal: string
+}
+
+function App({getItems, getUser, user, setSearchVal, searchVal}: props): JSX.Element {
+  const [authenticated, setAuthenticated] = useState<boolean>(false);
   
   //UseEffect:
   useEffect(() => {
