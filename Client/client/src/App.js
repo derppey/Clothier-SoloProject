@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import HomeDash from './components/HomeDash/HomeDash';
 import Register from './components/Register';
-import ItemDetail from './components/ItemDetailsTest/ItemDetail';
+import ItemDetail from './components/ItemDetailsTest/ItemDetail.tsx'
 import MyCloset from './components/MyCloset/MyCloset';
 import UserCloset from './components/UserCloset';
 import LoginPage from './components/LoginPage';
