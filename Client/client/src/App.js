@@ -5,12 +5,12 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import HomeDash from './components/HomeDash/HomeDash';
-import Register from './components/Register';
-import ItemDetail from './components/ItemDetailsTest/ItemDetail.tsx'
+import HomeDash from './components/HomeDash/HomeDash.tsx';
+import Register from './components/Register/Register';
+import ItemDetail from './components/ItemDetailsTest/ItemDetail';
 import MyCloset from './components/MyCloset/MyCloset';
-import UserCloset from './components/UserCloset';
-import LoginPage from './components/LoginPage';
+import UserCloset from './components/UserCloset/UserCloset';
+import LoginPage from './components/LoginPage/LoginPage';
 import actions from './redux/actions';
 import { connect } from 'react-redux';
 // import apiService from './apiServices';
