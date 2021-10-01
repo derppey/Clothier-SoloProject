@@ -1,10 +1,8 @@
 import {render, screen} from '@testing-library/react';
 import { createStore } from 'redux';
-import ReactRouter from 'react-router'
 import { Provider } from 'react-redux';
 import reducers from '../../redux/reducers';
 import MyCloset from './MyCloset';
-import Categories from '../Categories'
 describe('MyCloset component', () => {
   test('should match the snapshot', () => {
     let store = createStore(reducers, window.__REDUX_DEVTOOLS_EXTENSION__ &&
