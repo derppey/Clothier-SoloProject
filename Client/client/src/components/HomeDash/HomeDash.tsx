@@ -1,5 +1,5 @@
 import React from 'react'
-import SearchResults from'../SearchResults/SearchResults'
+import SearchResults from'../SearchResults'
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
 import actions from '../../redux/actions';
@@ -8,28 +8,39 @@ import '../../styles/app.css';
 
 const catArr = ['Pants', 'Outerwear Pants and Sets', 'Coats & Outerwear', 'Hoodies & Sweatshirts', 'Sweaters', 'Shirts & Tops', 'Underwear & Intimates', 'Dresses', 'Jeans', 'Socks', 'Skirts', "Kids' Sets"]
 const initialState = catArr.map(category => {return {category: category, isActive: ''}})
+interface Item {
+  primaryKey: number;
+  image: string;
+  category: string;
 
-function HomeDash({items, searchVal, setSelectedItem}) {
+}
+interface Category {
+  category: string;
+  isActive: string;
+}
+interface Props {
+  items: Item[];
+  searchVal: string;
+  setSelectedItem: Function;
+}
+function HomeDash({items, searchVal, setSelectedItem} : Props): JSX.Element {
   
-  const [all, setAll] = useState({category: 'all', isActive: 'is-active'});
-  const [filter, setFilter] = useState('all');
-  const [categories, setCategories] = useState(initialState);
-  const [prevIndex, setPrevIndex] = useState(null)
+  const [all, setAll] = useState<Category>({category: 'all', isActive: 'is-active'});
+  const [filter, setFilter] = useState<string>('all');
+  const [categories, setCategories] = useState<Category[]>(initialState);
+  const [prevIndex, setPrevIndex] = useState<number>(0)
 
-  function handleClick(cat, index) {
-    setAll({...all, isActive:''})
-    setFilter(cat.category);
+  function handleClick(cat: Category, index: number) {
     const newActive= [...categories];
-    setPrevIndex(index);
-    if (prevIndex !== null) newActive[prevIndex].isActive = '';
-    newActive[index].isActive = 'is-active';
-    setCategories(newActive);
-  }
-  
-  function handleAllClick() {
-    setFilter(all.category);
-    setAll({...all, isActive:'is-active'})
-    const newActive= [...categories];
+    if(cat){
+      setAll({...all, isActive:'is-active'})
+      setAll({...all, isActive:''})
+      setPrevIndex(index);
+      newActive[index].isActive = 'is-active';
+    }else{
+      setFilter(all.category);
+      setAll({...all, isActive:'is-active'})
+    }
     if (prevIndex !== null) newActive[prevIndex].isActive = '';
     setCategories(newActive);
   }
@@ -51,7 +62,7 @@ function HomeDash({items, searchVal, setSelectedItem}) {
       }
       <div className="categories tabs">
         <ul>
-          <li className={all.isActive} onClick={() => handleAllClick()}> <a>All</a> </li>
+          <li className={all.isActive} onClick={() => handleClick(null, 0)}> <a>All</a> </li>
           {categories.map((category, index) =>
             <li className={category.isActive} key={index} onClick={() => handleClick(category, index)} ><a>{category.category}</a></li>
             )}
@@ -99,16 +110,16 @@ function HomeDash({items, searchVal, setSelectedItem}) {
   )
 }
 
-const mapStateToProps = ({store}) => {
+const mapStateToProps = ({store} : any) => {
   return {
     items: store.items,
     searchVal: store.searchVal,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch : any) => {
   return {
-    setSelectedItem: (action) => dispatch(action)
+    setSelectedItem: (action: any) => dispatch(action)
   };
 };
 
