@@ -1,5 +1,5 @@
 import React from 'react'
-import SearchResults from '../SearchResults'
+import SearchResults from '../SearchResults/SearchResults'
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
 import { useState, useEffect } from 'react';
@@ -19,11 +19,17 @@ interface user {
     Follows: []
 
 }
+interface props  {
+  user: user
+  getUser: Function,
+  getItems: Function
+  searchVal: string
+}
 
 
-function MyCloset(user:user, searchVal:string, setSelectedItem: Function, getUser:Function, getItems:Function)  {
+function MyCloset({user, getUser, getItems, searchVal}: props): JSX.Element  {
   const ADQitems = user.ADQs;
-  const userCategories = [new Set(user.ADQs.map((item:any) => item.item.category))];
+  const userCategories = [...new Set(user.ADQs.map((item) => item.item.category))];
   const initialState = userCategories.map(category => {return {category: category, isActive: ''}})
   
   const [all, setAll] = useState({category: 'all', isActive: 'is-active'});
@@ -136,11 +142,11 @@ const mapStateToProps = ({store}:any) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch:any) => {
   return {
-    setSelectedItem: (action) => dispatch(action),
-    getItems: (action) => dispatch(action),
-    getUser: (action) => dispatch(action),
+    setSelectedItem: (action:any) => dispatch(action),
+    getItems: (action:any) => dispatch(action),
+    getUser: (action:any) => dispatch(action),
   };
 };
 

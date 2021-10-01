@@ -33,12 +33,19 @@ interface selecetedItem {
      productUrl: string
 }
 
+interface props {
+  searchVal: string,
+  selectedItem: selecetedItem, 
+  user: user,
+  setSelectedItem:Function,
+  items: items[]
+}
 
-function ItemDetail(searchVal: string, selectedItem: selecetedItem , user: user, setSelectedItem:Function, items: items[]) {
-  const [acquired, setAcquired] = useState<any[]>(user.ADQs.map<number>((item:any) => item.itemPrimaryKey))
+
+function ItemDetail({searchVal, selectedItem, user, setSelectedItem, items}: props): JSX.Element {
+  const [acquired, setAcquired] = useState<any>(user.ADQs.map((item:any) => item.itemPrimaryKey))
   const [toggle, setToggle] = useState<boolean>(false);
   const { itemId }:any = useParams();
-
   useEffect(() => {
     getItem(itemId);
   }, [toggle]);
@@ -51,7 +58,7 @@ function ItemDetail(searchVal: string, selectedItem: selecetedItem , user: user,
     await apiService.ADQ(user.primaryKey, selectedItem.primaryKey);
     setAcquired([...acquired, selectedItem.primaryKey]);
   }
-  const userItems:items[] = user.ADQs.filter(item => item.item.category === selectedItem.category);
+  const userItems = user.ADQs.filter(item => item.item.category === selectedItem.category);
   const filteredItems = items.filter(item => item.category === selectedItem.category);
   return (
     <div className='content item'>

@@ -8,7 +8,7 @@ import '../../styles/app.css';
 import fetchService from '../../fetchService'
 
 
-function SearchResults({items, searchVal, user, setSearchVal, setSelectedItem, setSelectedUser, getItems, getUser}) {
+function SearchResults({items, searchVal, user, setSearchVal, setSelectedItem, setSelectedUser, getItems, getUser}): JSX.Element {
   
   const [usersArr, setUsersArr] = useState([]);
   const [followed, setFollowed] = useState(user.Follows.map((user) => user.userPrimaryKey))
