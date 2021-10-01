@@ -1,5 +1,5 @@
 import React from 'react'
-import SearchResults from '../SearchResults'
+import SearchResults from '../SearchResults/SearchResults'
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
 import { useState, useEffect } from 'react';

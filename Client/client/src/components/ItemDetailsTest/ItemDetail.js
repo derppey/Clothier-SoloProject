@@ -1,5 +1,5 @@
 import React from 'react'
-import SearchResults from '../SearchResults'
+import SearchResults from '../SearchResults/SearchResults'
 import { connect } from 'react-redux';
 import { useState, useEffect } from 'react';
 import apiService from '../../apiServices';
