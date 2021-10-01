@@ -31,6 +31,7 @@ function HomeDash({items, searchVal, setSelectedItem} : Props): JSX.Element {
   const [prevIndex, setPrevIndex] = useState<number>(0)
 
   function handleClick(cat: Category, index: number) {
+<<<<<<< HEAD
     const newActive= [...categories];
     if(cat){
       setAll({...all, isActive:'is-active'})
@@ -41,6 +42,21 @@ function HomeDash({items, searchVal, setSelectedItem} : Props): JSX.Element {
       setFilter(all.category);
       setAll({...all, isActive:'is-active'})
     }
+=======
+    setAll({...all, isActive:''})
+    setFilter(cat.category);
+    const newActive= [...categories];
+    setPrevIndex(index);
+    if (prevIndex !== null) newActive[prevIndex].isActive = '';
+    newActive[index].isActive = 'is-active';
+    setCategories(newActive);
+  }
+  
+  function handleAllClick() {
+    setFilter(all.category);
+    setAll({...all, isActive:'is-active'})
+    const newActive= [...categories];
+>>>>>>> 823a16da0797adbbadb9a022a9e3e8cc80890dc8
     if (prevIndex !== null) newActive[prevIndex].isActive = '';
     setCategories(newActive);
   }
