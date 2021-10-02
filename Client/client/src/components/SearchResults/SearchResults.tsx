@@ -73,8 +73,10 @@ function SearchResults({items, searchVal, user, setSearchVal, setSelectedItem, s
     setUsersArr(await apiService.getUsers());
   }
   const followUser = async (currentUserId:number) => {
-    await apiService.follow(user.primaryKey, currentUserId);
-    //if (res.error) console.log('No user info found');
+    const res = await apiService.follow(user.primaryKey, currentUserId);
+    if (res) {
+      if(res.status !== 201) console.log('no user found')
+    } 
     setFollowed([...followed, currentUserId]);
   };
 
@@ -84,7 +86,7 @@ function SearchResults({items, searchVal, user, setSearchVal, setSelectedItem, s
     setSelectedItem(actions.getSingleItem(item))
   }
 
-  function selectUser(user: user) {
+  function selectUser(user: any) {
     console.log(user)
     setSearchVal(actions.setSearchVal(''))
     setSelectedUser(actions.setSelectedUser(user));
@@ -92,7 +94,7 @@ function SearchResults({items, searchVal, user, setSearchVal, setSelectedItem, s
   
   if (usersArr && items) {
     const filteredItems = items.filter((item) => re.test(item.category))
-    const filteredUsers = usersArr.filter((user: user) => re.test(user.username))
+    const filteredUsers = usersArr.filter((user: any) => re.test(user.username))
     return (
       <div className='columns'>
         <div className="column">

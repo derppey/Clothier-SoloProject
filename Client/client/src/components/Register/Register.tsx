@@ -12,21 +12,57 @@ const initialState = {
   lastname: '',
   username: ''
 }
-
-interface props {
-  setAuthenticated: Function,
-  items: []
+interface ADQs {
+  itemPrimaryKey: number,
+  item: items
 }
 
-function Register({setAuthenticated, items}: props) {
-  const [registryStep, setRegistryStep] = useState<Object>({
+
+interface items {
+  title: string, 
+  category:string,
+  image: string,
+  primaryKey?:number,
+  brand: string,
+  productId: string, 
+  productUrl: string
+  item: items;
+}
+interface state  {
+  firstname: string
+  lastname: string
+  username: string
+  email: string
+  password: string
+  firstName?: string
+  lastName?: string
+}
+interface user  {
+  firstname: string
+  lastname: string
+  username: string
+  email: string
+  password: string
+  userPrimaryKey: number
+  primaryKey: number
+  ADQs: ADQs[], 
+  Followers: user[], 
+  Follows: []
+}
+interface props {
+  setAuthenticated: Function,
+  user: user
+}
+
+function Register({setAuthenticated, user}: props) {
+  const [registryStep, setRegistryStep] = useState<{}>({
     step: 1,
   });
-  const [newUser, setNewUser] = useState<{}>(initialState);
+  const [newUser, setNewUser] = useState<state>(initialState);
   const [tempIndex, setTempIndex] = useState<string>('');
   const [regSearchVal, setRegSearchVal] = useState<string>('');
   const [usersArr, setUsersArr] = useState<[]>([]);
-  const [followed, setFollowed] = useState<[]>([]);
+  const [followed, setFollowed] = useState(user.Follows.map((user:user) =>  user.userPrimaryKey));
   
   
   useEffect(() => {
@@ -37,13 +73,15 @@ function Register({setAuthenticated, items}: props) {
     setUsersArr(await apiService.getUsers());
   }
 
-  const followUser = async (currentUserId) => {
-    const res:void|Response = await apiService.follow(tempIndex, currentUserId);
-    if (res.error) console.log('No user info found');
-    setFollowed([...followed, currentUserId]);
+  const followUser = async (currentUserId: number) => {
+    const res = await apiService.follow(tempIndex, currentUserId);
+    if(res) {
+      if (!res.ok ) console.log('No user info found');
+      setFollowed([...followed, currentUserId]);
+    }
   };
   
-  const handleChange = (e:React.InputHTMLAttributes<HTMLInputElement>) => {
+  const handleChange = (e:any) => {
     const { name, value } = e.target;
     setNewUser((prevState) => ({
       ...prevState,
@@ -51,11 +89,11 @@ function Register({setAuthenticated, items}: props) {
     }));
   };
   
-  const handleChange2 = (e:React.InputHTMLAttributes<HTMLInputElement>) => {
+  const handleChange2 = (e:any) => {
     setRegSearchVal(e.target.value);
   };
   
-  const handleSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e:any) => {
     e.preventDefault();
     const user = {...newUser};
     const res = await apiService.register(user);
@@ -68,7 +106,7 @@ function Register({setAuthenticated, items}: props) {
     }
   };
   
-  const LogInhandleSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
+  const LogInhandleSubmit = async (e:any) => {
     const { email, password } = newUser;
     const user = { email, password };
     const res = await apiService.login(user);
@@ -83,7 +121,7 @@ function Register({setAuthenticated, items}: props) {
   }
   
   const re = new RegExp(regSearchVal, 'i');
-  const filteredUsers = regSearchVal ? usersArr.filter((user:{}) => re.test(user.username)) : [];
+  const filteredUsers:user[] = regSearchVal ? usersArr.filter((user:user) => re.test(user.username)) : [];
   
   switch (registryStep) { 
     case 2:
@@ -98,7 +136,7 @@ function Register({setAuthenticated, items}: props) {
                 <input className="input is-rounded" type="text" placeholder="🔍 Search" value={regSearchVal} onChange={handleChange2}/>
               </div>
               <div className="control">
-                <button className="button is-info is-rounded" type='click' onClick={() => {setRegistryStep(3)}} > Next </button>
+                <button className="button is-info is-rounded" onClick={() => {setRegistryStep(3)}} > Next </button>
               </div>
             </div>
             <div className='search-follow'>
@@ -192,14 +230,15 @@ function Register({setAuthenticated, items}: props) {
   }
 }
 
-const mapStateToProps = ({store}) => {
+const mapStateToProps = ({store}: any) => {
   return {
-    items: store.items,
+    user:store.user
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch:any) => {
   return {
+
   };
 };
 

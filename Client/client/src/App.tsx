@@ -36,7 +36,7 @@ interface props {
 
 function App({getItems, getUser, user, setSearchVal, searchVal}: props): JSX.Element {
   const [authenticated, setAuthenticated] = useState<boolean>(false);
-  
+
   //UseEffect:
   useEffect(() => {
     async function fetchData () {
@@ -52,8 +52,9 @@ function App({getItems, getUser, user, setSearchVal, searchVal}: props): JSX.Ele
   }, [authenticated, getItems, getUser]);
     
   //Handle searchbar:
-  const handleEvent = (e:React.InputHTMLAttributes<HTMLInputElement>) => {
-    setSearchVal(actions.setSearchVal(e.target.value));
+  const handleEvent = (e:any) => {
+    const target = (e.target as HTMLInputElement).value;
+    setSearchVal(actions.setSearchVal(target));
   }
 
   const logOut = () => {
