@@ -1,4 +1,5 @@
 import SearchResults from '../SearchResults/SearchResults'
+import React from 'react'
 import { connect } from 'react-redux';
 import { useState, useEffect } from 'react';
 import apiService from '../../apiServices';
@@ -11,7 +12,7 @@ import { Link, useParams } from "react-router-dom";
 interface items {
   title: string, 
   category:string,
-  image:string,
+  image: string,
   primaryKey?:number,
   brand: string,
   productId: string, 
@@ -19,8 +20,13 @@ interface items {
   item: [];
 }
 
+interface ADQs {
+  itemPrimaryKey: number,
+  item: items
+}
+
 interface user {
-  ADQs:[], 
+  ADQs: ADQs[], 
   Followers: [], 
   primaryKey: number
 }
@@ -115,7 +121,7 @@ function ItemDetail({searchVal, selectedItem, user, setSelectedItem, items}: pro
   )
 }
 
-const mapStateToProps = ({store}:any) => {
+const mapStateToProps = ({store} : any) => {
   return {
     user: store.user,
     searchVal: store.searchVal,
@@ -124,9 +130,9 @@ const mapStateToProps = ({store}:any) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch : any) => {
   return {
-    setSelectedItem: (action) => dispatch(action),
+    setSelectedItem: (action : any) => dispatch(action),
   };
 };
 
