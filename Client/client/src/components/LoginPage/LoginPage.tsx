@@ -11,8 +11,6 @@ const initialState = {
   password: '',
 };
 
-
-
 export default function LogIn(props: {setAuthenticated:Function}) : JSX.Element {
   const [userLogin, setUserLogin] = useState<{email:string, password:string}>(initialState);
   
