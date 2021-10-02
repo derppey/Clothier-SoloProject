@@ -4,6 +4,11 @@
     isActive: string;
   }
 
+  export interface BasicUser {
+    email: string
+     password: string
+  }
+
   export interface Items {
     title: string, 
     category:string,
