@@ -3,7 +3,7 @@
 const db = require('../models/index');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-require('dotenv').config();
+
 const SECRET_KEY = process.env.SECRET_KEY;
 
 
@@ -203,7 +203,7 @@ exports.login = async (ctx) => {
     ctx.body = { accessToken };
   } catch (error) {
     ctx.status = 401
-    ctx.body = { error: '401', message: 'Username or password is incorrect' };
+    ctx.body = { error: '401', message: error };
   }
 };
 

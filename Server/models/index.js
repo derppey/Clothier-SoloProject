@@ -17,7 +17,7 @@ const config = {
   operatorsAliases: 0 
 };
 
-const sequelize = new Sequelize('postgres', 'postgres', 'admin', config);
+const sequelize = new Sequelize(process.env.DB, 'postgres', 'admin', config);
 const db = {};
 
 const files = fs.readdirSync(__dirname);
