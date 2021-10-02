@@ -1,5 +1,8 @@
 import {render, screen} from '@testing-library/react';
 import { createStore } from 'redux';
+import userEvent from '@testing-library/user-event'
+import '@testing-library/jest-dom'
+
 
 import HomeDash from './HomeDash';
 import { Provider } from 'react-redux';
@@ -23,4 +26,15 @@ describe('Home component', () => {
     screen.getByText(/Shirts & Tops/);
     screen.getByText(/Underwear & Intim/);
   })
+
+  test('should change classNames correctly', () => {
+    let {container} = render(<Provider store={store}><HomeDash /></Provider>)
+    userEvent.click(screen.getByText('Outerwear Pants and Sets').closest('a'))
+    expect(container.getElementsByClassName('is-active').length).toBe(1)
+
+    userEvent.click(screen.getByText('Pants').closest('a'))
+    expect(container.getElementsByClassName('is-active').length).toBe(1)
+  })
+
+
 })
