@@ -149,7 +149,7 @@ exports.getADQ = async function (ctx) {
     ctx.status = 200;
   } catch (err) {
     ctx.body = err;
-    ctx.status = 500;
+    ctx.status = 404;
   }
 };
 
@@ -163,7 +163,7 @@ exports.postADQ = async ctx => {
     ctx.status = 201;
   } catch (err) {
     ctx.body = err;
-    ctx.status = 500;
+    ctx.status = 404;
   }
 };
 
@@ -178,8 +178,7 @@ exports.followUser = async ctx => {
     ctx.status = 201;
     return currentUser.getUser()
   } catch (err) {
-    ctx.body.error = err;
-    ctx.status = 500;
+    ctx.status = 404;
   }
 };
 
