@@ -983,14 +983,9 @@ const data = [
       "createdAt": "2021-09-23T06:17:27.633Z"
   }
 ]
-beforeAll(async () => {
- // do something before anything else runs
-});
-// close the server after each test
+
 afterAll(() => {
  server.close();
- console.log('server closed!');
-
 });
 
 //TODO: Check for username uniqueness
@@ -1047,6 +1042,7 @@ describe('Testing of endpoints on server', () => {
       return done();
     })
  });
+
  test('GET /me should get user info', async () => {
    const login = await request(server)
    .post('/login')
@@ -1058,7 +1054,8 @@ describe('Testing of endpoints on server', () => {
     .get('/me')
     .set('authorization','Bearer ' + login.body['accessToken'])
     .expect(200)
- })
+ });
+
  test('GET /items should get items', async () => {
    const result = await request(server).get('/items');
    if(result.body.length !== 98){
@@ -1066,6 +1063,32 @@ describe('Testing of endpoints on server', () => {
     const updatedRes = await request(server).get('/items');
     expect(updatedRes.body.length).toEqual(98);
   }else{expect(result.body.length).toEqual(98);}
+ });
 
+ test('POST /OneItem should get item by id if exists', (done) => {
+  request(server)
+    .post('/OneItem')
+    .send({
+      ItemId: 226
+    })
+    .expect(200)
+    .end((err, res) => {
+      if(err) return done(err);
+      return done();
+    })
+ });
+ test('POST /OneItem should error if id does not exist', (done) => {
+   request(server)
+    .post('/OneItem')
+    .send({
+      ItemId: 0
+    })
+    .expect(204)
+    .end((err, res) => {
+      if(err) return done(err);
+      return done();
+    })
  })
+ 
+
 });
