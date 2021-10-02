@@ -6,50 +6,13 @@ import { useState, useEffect } from 'react';
 import '../../styles/app.css';
 import apiService from '../../apiServices';
 import actions from '../../redux/actions';
-
-interface items {
-  title: string, 
-  category:string,
-  image: string,
-  primaryKey:number,
-  userPrimaryKey: number
-  brand: string,
-  productId: string, 
-  productUrl: string
-  item: [];
-}
-
-interface ADQs {
-  itemPrimaryKey: number,
-  item: items
-}
-
-interface SelectedUser {
-    ADQs: ADQs[],
-    Follows: []
-    primaryKey: number
-    firstName: string
-    lastName: string
-    userName: string
-    email: string
-}
-interface user  {
-  firstname: string
-  lastname: string
-  username: string
-  email: string
-  password: string
-  userPrimaryKey: number
-  primaryKey: number
-  ADQs: ADQs[], 
-  Followers: user[], 
-  Follows: []
-}
+import { User, Category, SelectedUser } from '../../Interfaces/interfaces'
+import Categories from '../Categories';
 
 interface Props {
   selectedUser: SelectedUser
   searchVal : string
-  globalUser : user
+  globalUser : User
   setSelectedUser : Function
 }
 
@@ -63,7 +26,7 @@ function UserCloset({selectedUser, searchVal, globalUser, setSelectedUser} : Pro
   const [filter, setFilter] = useState('all');
   const [categories, setCategories] = useState(initialState);
   const [prevIndex, setPrevIndex] = useState<null | number>(null)
-  const [followed, setFollowed] = useState(globalUser.Follows.map((user:user) =>  user.userPrimaryKey));
+  const [followed, setFollowed] = useState(globalUser.Follows.map((user:User) =>  user.userPrimaryKey));
   
   const { userId }:any = useParams();
 
@@ -76,7 +39,7 @@ function UserCloset({selectedUser, searchVal, globalUser, setSelectedUser} : Pro
   }
 
 
-  function handleClick(cat:any, index:number) {
+  function handleClick(cat:Category, index:number) {
     setAll({...all, isActive:''})
     setFilter(cat.category);
     const newActive= [...categories];
@@ -125,9 +88,7 @@ function UserCloset({selectedUser, searchVal, globalUser, setSelectedUser} : Pro
 
             <ul>
             <li className={all.isActive} onClick={() => handleAllClick()}> <a>All</a> </li>
-            {categories.map((category, index) =>
-              <li className={category.isActive} key={index} onClick={() => handleClick(category, index)} ><a>{category.category}</a></li>
-            )}
+            <Categories categories={categories} handleClick={handleClick}/>
             </ul>
           </div>
 

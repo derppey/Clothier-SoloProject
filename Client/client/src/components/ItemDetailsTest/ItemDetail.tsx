@@ -7,44 +7,14 @@ import '../../styles/app.css';
 import { ExternalLink } from 'react-external-link';
 import actions from '../../redux/actions';
 import { Link, useParams } from "react-router-dom";
-// import fetchService from '../fetchService';
-
-interface items {
-  title: string, 
-  category:string,
-  image: string,
-  primaryKey?:number,
-  brand: string,
-  productId: string, 
-  productUrl: string
-  item: [];
-}
-
-interface ADQs {
-  itemPrimaryKey: number,
-  item: items
-}
-
-interface user {
-  ADQs: ADQs[], 
-  Followers: [], 
-  primaryKey: number
-}
-interface selecetedItem {
-  category:string,
-   brand:string,
-    title:string, 
-    primaryKey: number,
-     image: string
-     productUrl: string
-}
+import {Items, User, SelectedItem } from '../../Interfaces/interfaces'
 
 interface props {
   searchVal: string,
-  selectedItem: selecetedItem, 
-  user: user,
+  selectedItem: SelectedItem, 
+  user: User,
   setSelectedItem:Function,
-  items: items[]
+  items: Items[]
 }
 
 

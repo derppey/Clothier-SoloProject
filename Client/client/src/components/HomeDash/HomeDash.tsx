@@ -5,21 +5,14 @@ import { connect } from 'react-redux';
 import actions from '../../redux/actions';
 import { useState } from 'react';
 import '../../styles/app.css';
+import { Items, Category} from '../../Interfaces/interfaces'
+import Categories from '../Categories';
 
 const catArr = ['Pants', 'Outerwear Pants and Sets', 'Coats & Outerwear', 'Hoodies & Sweatshirts', 'Sweaters', 'Shirts & Tops', 'Underwear & Intimates', 'Dresses', 'Jeans', 'Socks', 'Skirts', "Kids' Sets"]
 const initialState = catArr.map(category => {return {category: category, isActive: ''}})
-interface Item {
-  primaryKey: number;
-  image: string;
-  category: string;
 
-}
-interface Category {
-  category: string;
-  isActive: string;
-}
 interface Props {
-  items: Item[];
+  items: Items[];
   searchVal: string;
   setSelectedItem: Function;
 }
@@ -67,9 +60,7 @@ function HomeDash({items, searchVal, setSelectedItem} : Props): JSX.Element {
       <div className="categories tabs">
         <ul>
           <li className={all.isActive} onClick={() => handleAllClick()}> <a>All</a> </li>
-          {categories.map((category, index) =>
-            <li className={category.isActive} key={index} onClick={() => handleClick(category, index)} ><a>{category.category}</a></li>
-            )}
+          <Categories categories={categories} handleClick={handleClick}/>
         </ul>
       </div>
       <div className="dashboardItems tile is-ancestor">
