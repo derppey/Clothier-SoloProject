@@ -1141,6 +1141,58 @@ describe('Testing of endpoints on server', () => {
       })
 
   });
+
+  test('GET /adq should get all relationships', (done) => {
+    request(server)
+      .get('/adq')
+      .expect(200)
+      .end((err, res) => {
+        if(err) return done(err);
+        return done();
+      })
+  })
+
+  test('POST /adq should add item user relationship', (done) => {
+    request(server)
+      .post('/adq')
+      .send({
+        UserId: 1,
+        ItemId: 226,
+      })
+      .expect(201)
+      .end((err, res) => {
+        if(err) return done(err);
+        return done();
+      })
+  })
+
+  test('POST /adq should fail if user does not exist', (done) => {
+    request(server)
+      .post('/adq')
+      .send({
+        UserId: 5849848,
+        ItemId: 226,
+      })
+      .expect(404)
+      .end((err, res) => {
+        if(err) return done(err);
+        return done();
+      })
+  })
+
+  test('POST /adq should fail if item does not exist', (done) => {
+    request(server)
+      .post('/adq')
+      .send({
+        UserId: 1,
+        ItemId: 65454848874984,
+      })
+      .expect(404)
+      .end((err, res) => {
+        if(err) return done(err);
+        return done();
+      })
+  })
  
 
 });
