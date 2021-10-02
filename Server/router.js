@@ -14,9 +14,9 @@ router.get('/me', authMiddleware, mainMethods.profile); //DONE
 router.post('/users', mainMethods.postUsers); //DONE
 
 //Get all items
-router.get('/items', mainMethods.getItems);
+router.get('/items', mainMethods.getItems); 
 //Register new items
-router.post('/items', mainMethods.postItems);
+router.post('/items', mainMethods.postItems); //NO LONGER NEEDED
 //get One item
 router.post('/OneItem', mainMethods.getOneItem);
 

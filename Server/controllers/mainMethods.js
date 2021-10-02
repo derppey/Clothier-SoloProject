@@ -127,8 +127,12 @@ exports.postItems = async ctx => {
       db.items.create({
         title: item.title,
         category: item.category,
-        price: item.price,
+        brand: item.brand,
         image: item.image,
+        productId: item.productId,
+        productUrl: item.productUrl,
+        primaryKey: item.primaryKey,
+        createdAt: item.createdAt
         })
       })
       ctx.status = 201;
