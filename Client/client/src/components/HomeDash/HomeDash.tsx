@@ -30,17 +30,21 @@ function HomeDash({items, searchVal, setSelectedItem} : Props): JSX.Element {
   const [categories, setCategories] = useState<Category[]>(initialState);
   const [prevIndex, setPrevIndex] = useState<number>(0)
 
-  function handleClick(cat: Category, index: number) {
+ 
+  function handleClick(cat:Category, index:number) {
+    setAll({...all, isActive:''})
+    setFilter(cat.category);
     const newActive= [...categories];
-    if(cat){
-      setAll({...all, isActive:'is-active'})
-      setAll({...all, isActive:''})
-      setPrevIndex(index);
-      newActive[index].isActive = 'is-active';
-    }else{
-      setFilter(all.category);
-      setAll({...all, isActive:'is-active'})
-    }
+    setPrevIndex(index);
+    if (prevIndex !== null) newActive[prevIndex].isActive = '';
+    newActive[index].isActive = 'is-active';
+    setCategories(newActive);
+  }
+
+  function handleAllClick() {
+    setFilter(all.category);
+    setAll({...all, isActive:'is-active'})
+    const newActive= [...categories];
     if (prevIndex !== null) newActive[prevIndex].isActive = '';
     setCategories(newActive);
   }
@@ -62,7 +66,7 @@ function HomeDash({items, searchVal, setSelectedItem} : Props): JSX.Element {
       }
       <div className="categories tabs">
         <ul>
-          <li className={all.isActive} onClick={() => handleClick(null, 0)}> <a>All</a> </li>
+          <li className={all.isActive} onClick={() => handleAllClick()}> <a>All</a> </li>
           {categories.map((category, index) =>
             <li className={category.isActive} key={index} onClick={() => handleClick(category, index)} ><a>{category.category}</a></li>
             )}
