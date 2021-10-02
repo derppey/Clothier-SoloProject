@@ -5,29 +5,38 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import HomeDash from './components/HomeDash/HomeDash.tsx';
-import Register from './components/Register/Register.tsx';
-import ItemDetail from './components/ItemDetailsTest/ItemDetail.tsx';
-import MyCloset from './components/MyCloset/MyCloset.tsx';
+import HomeDash from './components/HomeDash/HomeDash';
+import Register from './components/Register/Register';
+import ItemDetail from './components/ItemDetailsTest/ItemDetail';
+import MyCloset from './components/MyCloset/MyCloset';
 import UserCloset from './components/UserCloset/UserCloset';
-import LoginPage from './components/LoginPage/LoginPage.tsx';
+import LoginPage from './components/LoginPage/LoginPage';
 import actions from './redux/actions';
 import { connect } from 'react-redux';
-// import apiService from './apiServices';
+
 import logo from './utils/ClothierLiteCrop.png'
 import fetchService from './fetchService'
+
+interface user  {
+  firstName: string
+  lastName: string
+  username: string
+  email: string
+  password: string
+  primaryKey: number
+}
 
 interface props {
   getItems: Function
   getUser: Function
-   user: []
+   user: user
    setSearchVal: Function
     searchVal: string
 }
 
 function App({getItems, getUser, user, setSearchVal, searchVal}: props): JSX.Element {
   const [authenticated, setAuthenticated] = useState<boolean>(false);
-  
+
   //UseEffect:
   useEffect(() => {
     async function fetchData () {
@@ -43,8 +52,9 @@ function App({getItems, getUser, user, setSearchVal, searchVal}: props): JSX.Ele
   }, [authenticated, getItems, getUser]);
     
   //Handle searchbar:
-  const handleEvent = (e) => {
-    setSearchVal(actions.setSearchVal(e.target.value));
+  const handleEvent = (e:any) => {
+    const target = (e.target as HTMLInputElement).value;
+    setSearchVal(actions.setSearchVal(target));
   }
 
   const logOut = () => {
@@ -70,7 +80,6 @@ function App({getItems, getUser, user, setSearchVal, searchVal}: props): JSX.Ele
   return (
     <div className="body">
       
-      {/* NavBar   */}
       <nav className="top-menu navbar is-fixed-top pt-2">
         <div className="navbar-brand m-0">
           <Link to='/'>
@@ -82,14 +91,13 @@ function App({getItems, getUser, user, setSearchVal, searchVal}: props): JSX.Ele
         </div>
         <input className='navbar-item input is-rounded search-bar' type="text" placeholder="🔍 Search" value={searchVal} onChange={handleEvent}/>
         <Link to='/MyCloset'>
-        <button className="nav-button navbar-item button is-info is-rounded" type='click' onClick={() => setSearchVal(actions.setSearchVal(''))}> MyCloset </button>
+        <button className="nav-button navbar-item button is-info is-rounded"  onClick={() => setSearchVal(actions.setSearchVal(''))}> MyCloset </button>
         </Link>
         <Link to='/'>
-        <button className="nav-button navbar-item button is-warning is-rounded" type='click' onClick={() => logOut()} > Log Out </button>
+        <button className="nav-button navbar-item button is-warning is-rounded" onClick={() => logOut()} > Log Out </button>
         </Link>
       </nav>
 
-      {/* Router routes */}
       {user &&
       <div className='content'>
         <Switch>
@@ -97,7 +105,7 @@ function App({getItems, getUser, user, setSearchVal, searchVal}: props): JSX.Ele
             <ItemDetail></ItemDetail>
           </Route>
           <Route path="/MyCloset">
-            <MyCloset setAuthenticated={setAuthenticated}></MyCloset>
+            <MyCloset></MyCloset>
           </Route>
           <Route path="/UserCloset/:userId">
             <UserCloset></UserCloset>
@@ -112,18 +120,18 @@ function App({getItems, getUser, user, setSearchVal, searchVal}: props): JSX.Ele
   )
 }
 
-const mapStateToProps = ({store}) => {
+const mapStateToProps = ({store}: any) => {
   return {
     user: store.user,
     searchVal: store.searchVal,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch: any) => {
   return {
-    getItems: (action) => dispatch(action),
-    getUser: (action) => dispatch(action),
-    setSearchVal: (action) => dispatch(action),
+    getItems: (action:any) => dispatch(action),
+    getUser: (action:any) => dispatch(action),
+    setSearchVal: (action:any) => dispatch(action),
   };
 };
 

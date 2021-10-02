@@ -13,10 +13,10 @@ const initialState = {
 
 
 
-export default function LogIn(props: {setAuthenticated:Function}) {
+export default function LogIn(props: {setAuthenticated:Function}) : JSX.Element {
   const [userLogin, setUserLogin] = useState<{email:string, password:string}>(initialState);
   
-  const handleEvent = (e:React.InputHTMLAttributes<HTMLInputElement>)=> {
+  const handleEvent = (e:any)=> {
     const { name, value } = e.target;
     setUserLogin((prevState) => ({
       ...prevState,
