@@ -7,7 +7,7 @@ import '../styles/app.css';
 import apiService from '../apiServices';
 import actions from '../redux/actions';
 
-function UserCloset({selectedUser, searchVal, globalUser, setSelectedUser}) {
+function UserCloset({selectedUser, searchVal, globalUser, setSelectedUser}: JSX.Element) {
   const ADQitems = selectedUser.ADQs;
   const userCategories = [...new Set(selectedUser.ADQs.map((item) => item.item.category))];
   const initialState = userCategories.map(category => {return {category: category, isActive: ''}})

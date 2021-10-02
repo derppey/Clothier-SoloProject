@@ -13,6 +13,7 @@ import UserCloset from './components/UserCloset/UserCloset';
 import LoginPage from './components/LoginPage/LoginPage';
 import actions from './redux/actions';
 import { connect } from 'react-redux';
+
 import logo from './utils/ClothierLiteCrop.png'
 import fetchService from './fetchService'
 

@@ -54,7 +54,6 @@ exports[`Login Page should match the snapshot 1`] = `
       >
         <button
           class="mt-0 button is-link is-rounded"
-          type="click"
         >
            Register! 
         </button>
