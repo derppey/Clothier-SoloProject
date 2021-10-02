@@ -1117,19 +1117,30 @@ describe('Testing of endpoints on server', () => {
     })
  });
 
- test('POST /follow should error if user id does not exist', (done) => {
-  request(server)
-   .post('/follow')
-   .send({
-     currentUserId: 1,
-     profileUser: 50000,
-   })
-   .expect(404)
-   .end((err, res) => {
-     if(err) return done(err);
-     return done();
-   })
-});
+  test('POST /follow should error if user id does not exist', (done) => {
+    request(server)
+    .post('/follow')
+    .send({
+      currentUserId: 1,
+      profileUser: 50000,
+    })
+    .expect(404)
+    .end((err, res) => {
+      if(err) return done(err);
+      return done();
+    })
+  });
+
+  test('GET /follow should return all follows', (done) => {
+    request(server)
+      .get('/follow')
+      .expect(200)
+      .end((err, res) => {
+        if(err) return done(err);
+        return done();
+      })
+
+  });
  
 
 });

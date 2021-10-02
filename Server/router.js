@@ -26,9 +26,9 @@ router.get('/adq', mainMethods.getADQ);
 router.post('/adq', mainMethods.postADQ);
 
 //Get all follows
-router.get('/follow', mainMethods.getFollows);
+router.get('/follow', mainMethods.getFollows); // Done
 //New Follow
-router.post('/follow', mainMethods.followUser);
+router.post('/follow', mainMethods.followUser); // Done
 
 //Zappos DB populator
 router.get('/zappos', mainMethods.zapposFilter); //LEGACY
