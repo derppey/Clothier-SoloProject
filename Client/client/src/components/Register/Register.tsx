@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import apiService from '../../apiServices';
 import { connect } from 'react-redux';
 import '../../styles/login.css';
+import { User, State} from '../../Interfaces/interfaces'
 
 const initialState = {
   email: '',
@@ -12,57 +13,21 @@ const initialState = {
   lastname: '',
   username: ''
 }
-interface ADQs {
-  itemPrimaryKey: number,
-  item: items
-}
 
-
-interface items {
-  title: string, 
-  category:string,
-  image: string,
-  primaryKey?:number,
-  brand: string,
-  productId: string, 
-  productUrl: string
-  item: items;
-}
-interface state  {
-  firstname: string
-  lastname: string
-  username: string
-  email: string
-  password: string
-  firstName?: string
-  lastName?: string
-}
-interface user  {
-  firstname: string
-  lastname: string
-  username: string
-  email: string
-  password: string
-  userPrimaryKey: number
-  primaryKey: number
-  ADQs: ADQs[], 
-  Followers: user[], 
-  Follows: []
-}
 interface props {
   setAuthenticated: Function,
-  user: user
+  user: User
 }
 
 function Register({setAuthenticated, user}: props) {
   const [registryStep, setRegistryStep] = useState<{}>({
     step: 1,
   });
-  const [newUser, setNewUser] = useState<state>(initialState);
+  const [newUser, setNewUser] = useState<State>(initialState);
   const [tempIndex, setTempIndex] = useState<string>('');
   const [regSearchVal, setRegSearchVal] = useState<string>('');
   const [usersArr, setUsersArr] = useState<[]>([]);
-  const [followed, setFollowed] = useState(user.Follows.map((user:user) =>  user.userPrimaryKey));
+  const [followed, setFollowed] = useState(user.Follows.map((user:User) =>  user.userPrimaryKey));
   
   
   useEffect(() => {
@@ -121,7 +86,7 @@ function Register({setAuthenticated, user}: props) {
   }
   
   const re = new RegExp(regSearchVal, 'i');
-  const filteredUsers:user[] = regSearchVal ? usersArr.filter((user:user) => re.test(user.username)) : [];
+  const filteredUsers:User[] = regSearchVal ? usersArr.filter((user:User) => re.test(user.userName)) : [];
   
   switch (registryStep) { 
     case 2:
@@ -142,7 +107,7 @@ function Register({setAuthenticated, user}: props) {
             <div className='search-follow'>
             {filteredUsers.map(user =>
               <div className='box m-1' key={user.primaryKey}>
-                <h4 className='title is-4'>{user.username}</h4>
+                <h4 className='title is-4'>{user.userName}</h4>
                 {followed.includes(user.primaryKey) 
                   ? <h6>Following</h6>
                   : <button className='button is-success is-rounded' onClick={() => followUser(user.primaryKey)}>Follow</button>
@@ -236,10 +201,6 @@ const mapStateToProps = ({store}: any) => {
   };
 };
 
-const mapDispatchToProps = (dispatch:any) => {
-  return {
 
-  };
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Register);
+export default connect(mapStateToProps)(Register);

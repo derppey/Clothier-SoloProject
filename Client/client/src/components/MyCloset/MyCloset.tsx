@@ -6,42 +6,16 @@ import { useState, useEffect } from 'react';
 import actions from '../../redux/actions';
 import '../../styles/app.css';
 import fetchService from '../../fetchService';
+import { User, Category } from '../../Interfaces/interfaces'
+import Categories from '../Categories';
 
-interface user {
-  firstName: string,
-  lastName: string,
-  userName: string,
-  email: string,
-  password: string,
-  userPrimarKey: number
-  primaryKey: number
-    ADQs: ADQs[],
-    Follows: []
-}
 
-interface items {
-  title: string, 
-  category:string,
-  image: string,
-  primaryKey?:number,
-  brand: string,
-  productId: string, 
-  productUrl: string
-  item: items;
-}
-
-interface ADQs {
-  itemPrimaryKey: number,
-  item: items
-}
 interface props  {
-  user: user
+  user: User
   getUser: Function,
   getItems: Function
   searchVal: string
-
 }
-
 
 
 function MyCloset({user, getUser, getItems, searchVal}: props) : JSX.Element {
@@ -66,7 +40,7 @@ function MyCloset({user, getUser, getItems, searchVal}: props) : JSX.Element {
     }
   }, []);
 
-  function handleClick(cat:any, index:any) {
+  function handleClick(cat:Category, index:any) {
     setAll({...all, isActive:''})
     setFilter(cat.category);
     const newActive= [...categories];
@@ -102,9 +76,7 @@ function MyCloset({user, getUser, getItems, searchVal}: props) : JSX.Element {
           <div className="categories tabs">
             <ul>
             <li className={all.isActive} onClick={() => handleAllClick()}> <a>All</a> </li>
-            {categories.map((category, index) =>
-              <li className={category.isActive} key={index} onClick={() => handleClick(category, index)} ><a>{category.category}</a></li>
-            )}
+            <Categories categories={categories} handleClick={handleClick}/>
             </ul>
           </div>
 
