@@ -178,8 +178,7 @@ exports.followUser = async ctx => {
     ctx.status = 201;
     return currentUser.getUser()
   } catch (err) {
-    ctx.body.error = err;
-    ctx.status = 500;
+    ctx.status = 404;
   }
 };
 
