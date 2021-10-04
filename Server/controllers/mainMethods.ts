@@ -222,3 +222,9 @@ exports.login = async (ctx : any) => {
   }
 };
 
+exports.logout = async (ctx:any) => {
+  const authHeaders = ctx.request.headers['authorization'];
+  if (!authHeaders) return ctx.status = 403;
+  const tokenType = authHeaders.split(' ')[0];
+  const token = authHeaders.split(' ')[1];
+}
