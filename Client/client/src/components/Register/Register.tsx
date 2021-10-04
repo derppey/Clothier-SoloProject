@@ -2,6 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import apiService from '../../apiServices';
+// import {getUsers, follow, register,}from '../../apiServices';
 import { connect } from 'react-redux';
 import '../../styles/login.css';
 import { User, State} from '../../Interfaces/interfaces'
@@ -31,10 +32,10 @@ function Register({setAuthenticated, user}: props) {
   
   
   useEffect(() => {
-    getUsers();
+    getOneUser();
   }, []);
   
-  async function getUsers() {
+  async function getOneUser() {
     setUsersArr(await apiService.getUsers());
   }
 

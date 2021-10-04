@@ -1,4 +1,5 @@
 import {render, screen} from '@testing-library/react';
+
 import Register from './Register';
 import { Provider } from 'react-redux';
 import reducers from '../../redux/reducers';
@@ -13,9 +14,10 @@ describe('Register Page', () => {
     expect(container.firstChild).toMatchSnapshot();
   })
   test('should have correct title', () => {
-    render(<Provider store={store}><Register /></Provider>);
-    screen.getByText(/Welcome to Clothier!/);
+    render(<Provider store={store}><Register /></Provider>)
+    screen.getByText(/Welcome to Clothier!/i);
     screen.getByText(/Please follow these steps to begin:/);
     screen.getByText(/Next/);
   })
+
 })
