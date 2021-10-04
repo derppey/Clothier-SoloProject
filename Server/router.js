@@ -30,10 +30,6 @@ router.get('/follow', mainMethods.getFollows); // Done
 //New Follow
 router.post('/follow', mainMethods.followUser); // Done
 
-//Zappos DB populator
-router.get('/zappos', mainMethods.zapposFilter); //LEGACY
-router.post('/zappos', mainMethods.postItemsZappo ); //LEGACY
-
 //User Login Authenticaiton
 router.post('/login', mainMethods.login); //DONE
 

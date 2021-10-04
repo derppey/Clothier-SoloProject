@@ -1,14 +1,12 @@
 'use strict';
-
-const db = require('../models/index');
-const bcrypt = require('bcrypt');
+export {};
 const jwt = require('jsonwebtoken');
-
+const db = require('../models/index');
 const SECRET_KEY = process.env.SECRET_KEY;
 
 
 //User Methods
-exports.getUsers = async function (ctx) {
+exports.getUsers = async function (ctx:any) {
   try {
     ctx.body = await db.users.findAll({
       include: [
@@ -30,7 +28,7 @@ exports.getUsers = async function (ctx) {
   }
 };
 
-exports.postUsers = async ctx => {
+exports.postUsers = async (ctx : any) => {
   const user = ctx.request.body;
   try {
     await db.users.create({
@@ -46,13 +44,14 @@ exports.postUsers = async ctx => {
       attributes: ['primaryKey']
     })
   } catch (err) {
+    console.log(err);
     ctx.body = err;
     ctx.status = 500;
   }
 };
 
 //User Methods
-exports.getUserById = async function (id) {
+exports.getUserById = async function (id: number) {
   try {
     return await db.users.findOne({
       where: { primaryKey: id},
@@ -81,7 +80,7 @@ exports.getUserById = async function (id) {
   }
 };
 
-exports.profile = async (ctx) => {
+exports.profile = async (ctx : any) => {
   try {
     const user = ctx.request.user;
     ctx.status = 200;
@@ -93,7 +92,7 @@ exports.profile = async (ctx) => {
 };
 
 //Item Methods
-exports.getItems = async function (ctx) {
+exports.getItems = async function (ctx : any) {
   try {
     ctx.body = await db.items.findAll({
       attributes: ['title', 'category', 'brand', 'image', 'productId', 'productUrl', 'primaryKey', 'createdAt']
@@ -105,7 +104,7 @@ exports.getItems = async function (ctx) {
   }
 };
 
-exports.getOneItem = async function (ctx) {
+exports.getOneItem = async function (ctx : any) {
   const id = ctx.request.body.ItemId;
   try {
     const body = await db.items.findOne({
@@ -120,10 +119,10 @@ exports.getOneItem = async function (ctx) {
   }
 };
 
-exports.postItems = async ctx => {
+exports.postItems = async (ctx: any) => {
   const body = ctx.request.body;
   try {
-    await body.forEach(item => {
+    await body.forEach((item : any) => {
       db.items.create({
         title: item.title,
         category: item.category,
@@ -143,7 +142,7 @@ exports.postItems = async ctx => {
 };
 
 //ADQ Methods (creates relationship between a user and multiple items)
-exports.getADQ = async function (ctx) {
+exports.getADQ = async function (ctx : any) {
   try {
     ctx.body = await db.ADQ.findAll(); 
     ctx.status = 200;
@@ -153,7 +152,7 @@ exports.getADQ = async function (ctx) {
   }
 };
 
-exports.postADQ = async ctx => {
+exports.postADQ = async (ctx : any) => {
   const body = ctx.request.body;
   try {
     await db.ADQ.create({
@@ -169,7 +168,7 @@ exports.postADQ = async ctx => {
 
 // Follow Users Method
 
-exports.followUser = async ctx => {
+exports.followUser = async (ctx:any) => {
   const body = ctx.request.body;
   try {
     const currentUser = await db.users.findOne({where: {primaryKey: body.currentUserId}})
@@ -182,7 +181,7 @@ exports.followUser = async ctx => {
   }
 };
 
-exports.getFollows = async function (ctx) {
+exports.getFollows = async (ctx: any) => {
   try {
     ctx.body = await db.Follows.findAll()
     ctx.status = 200;
@@ -193,7 +192,7 @@ exports.getFollows = async function (ctx) {
 };
 
 //LogIn method
-exports.login = async (ctx) => {
+exports.login = async (ctx : any) => {
   const { email , password } = ctx.request.body;
   try {
     const user = await db.users.findOne({
@@ -210,55 +209,3 @@ exports.login = async (ctx) => {
   }
 };
 
-//The following code is just to get the items from Zappos Api in order to populate the DB
-
-//const { zapposProductList } = require('../tempDb')
-//const results = zapposProductList.results;
-var axios = require("axios").default;
-let resultsFiltered;
-
-exports.zapposFilter = async () => {
-  resultsFiltered = results.map((item, index) => {
-    return {
-      [index] : {
-        brandName: item.brandName,
-        productName: item.productName,
-        productId: item.productId,
-        productURL: item.productUrl,
-      }
-    }
-  })
-
-  let count = 0;
-  
-  const resultFunc = async () => {
-    if (count > 99) return clearInterval(interval);
-    console.log(count);
-    let resItem = resultsFiltered[count][count];
-    resultsFiltered[count][count] = {...resItem, ... await fetchReq(resItem.productId)}
-    console.log(resultsFiltered[count][count]);
-    return count++;
-  }
-  
-  const interval = setInterval(resultFunc, 3000);
-
-}
-exports.postItemsZappo = async (ctx) => {
-  const body = resultsFiltered;
-  try {
-    await body.forEach((item, index) => {
-      db.items.create({
-        title: item[index].productName,
-        category: item[index].category,
-        brand: item[index].brandName,
-        image: item[index].imageUrl,
-        productId: item[index].productId,
-        productUrl: item[index].productURL
-        })
-      })
-      ctx.status = 201;
-  } catch (err) {
-    ctx.body = err;
-    ctx.status = 500;
-  }
-};

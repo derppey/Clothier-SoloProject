@@ -4,7 +4,7 @@ const app = new Koa();
 const bodyParser = require('koa-bodyparser');
 const cors = require('@koa/cors');
 const router = require('./router');
-const db = require('./models/index.js');
+const db = require('./models/index');
 
 const corsConfig = {
   origin: 'http://localhost:3000',
