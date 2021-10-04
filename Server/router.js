@@ -14,21 +14,21 @@ router.get('/me', authMiddleware, mainMethods.profile); //DONE
 router.post('/users', mainMethods.postUsers); //DONE
 
 //Get all items
-router.get('/items', mainMethods.getItems);
+router.get('/items', mainMethods.getItems);  //Done
 //Register new items
-router.post('/items', mainMethods.postItems);
+router.post('/items', mainMethods.postItems); //NO LONGER NEEDED
 //get One item
-router.post('/OneItem', mainMethods.getOneItem);
+router.post('/OneItem', mainMethods.getOneItem);  //Done
 
 //Get all adquisitions
 router.get('/adq', mainMethods.getADQ);
 // Register new adquisition
 router.post('/adq', mainMethods.postADQ);
 
-//Get all adquisitions
-router.get('/follow', mainMethods.getFollows);
+//Get all follows
+router.get('/follow', mainMethods.getFollows); // Done
 //New Follow
-router.post('/follow', mainMethods.followUser);
+router.post('/follow', mainMethods.followUser); // Done
 
 //Zappos DB populator
 router.get('/zappos', mainMethods.zapposFilter); //LEGACY

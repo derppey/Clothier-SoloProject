@@ -26,7 +26,7 @@ function ItemDetail({searchVal, selectedItem, user, setSelectedItem, items}: pro
     getItem(itemId);
   }, [toggle]);
 
-  async function getItem (itemId: number) {
+  async function getItem (itemId: string) {
     setSelectedItem(actions.getSingleItem(await apiService.fetchOneItem(itemId)));
   }
 

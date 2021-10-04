@@ -127,8 +127,12 @@ exports.postItems = async ctx => {
       db.items.create({
         title: item.title,
         category: item.category,
-        price: item.price,
+        brand: item.brand,
         image: item.image,
+        productId: item.productId,
+        productUrl: item.productUrl,
+        primaryKey: item.primaryKey,
+        createdAt: item.createdAt
         })
       })
       ctx.status = 201;
@@ -145,7 +149,7 @@ exports.getADQ = async function (ctx) {
     ctx.status = 200;
   } catch (err) {
     ctx.body = err;
-    ctx.status = 500;
+    ctx.status = 404;
   }
 };
 
@@ -159,7 +163,7 @@ exports.postADQ = async ctx => {
     ctx.status = 201;
   } catch (err) {
     ctx.body = err;
-    ctx.status = 500;
+    ctx.status = 404;
   }
 };
 
@@ -174,8 +178,7 @@ exports.followUser = async ctx => {
     ctx.status = 201;
     return currentUser.getUser()
   } catch (err) {
-    ctx.body.error = err;
-    ctx.status = 500;
+    ctx.status = 404;
   }
 };
 
