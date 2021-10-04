@@ -2,7 +2,7 @@
 //import * as jwt from 'jsonwebtoken';
 //export {}
 const JWT = require('jsonwebtoken');
-
+const bcrypt = require('bcrypt');
 const db = require('../models/index');
 const SECRET_KEY:any  = process.env.SECRET_KEY;
 require('dotenv').config();
@@ -32,13 +32,14 @@ exports.getUsers = async function (ctx:any) {
 
 exports.postUsers = async (ctx : any) => {
   const user = ctx.request.body;
+  const pass = await bcrypt.hash(user.password, 10);
   try {
     await db.users.create({
       firstName: user.firstName,
       lastName: user.lastName,
       username: user.username,
       email: user.email,
-      password: user.password,
+      password: pass,
       })
     ctx.status = 201;
     ctx.body = await db.users.findOne({
@@ -199,8 +200,8 @@ exports.login = async (ctx : any) => {
   try {
     const user = await db.users.findOne({
       where: { email: email}});
-    // const validatedPass = await bcrypt.compare(password, user.password);
-    const validatedPass = (password === user.dataValues.password);
+    const validatedPass = await bcrypt.compare(password, user.password);
+    //const validatedPass = (password === user.dataValues.password);
     if (!validatedPass) throw new Error();
     const accessToken = JWT.sign({ _id: user.dataValues.primaryKey }, SECRET_KEY);
     ctx.status = 200
