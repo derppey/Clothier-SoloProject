@@ -1,6 +1,5 @@
 'use strict';
-//import * as jwt from 'jsonwebtoken';
-//export {}
+
 const JWT = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const db = require('../models/index');
@@ -122,19 +121,30 @@ exports.getOneItem = async function (ctx : any) {
   }
 };
 
+interface itemProp {
+  title: string;
+  category: string;
+  brand: string;
+  image: string;
+  productId: number;
+  productUrl: string;
+  primaryKey: number;
+  createdAt: string;
+}
+
 exports.postItems = async (ctx: any) => {
   const body = ctx.request.body;
   try {
-    await body.forEach((item : any) => {
+    await body.forEach(({title,category, brand, image, productId, productUrl, primaryKey, createdAt} : itemProp) => {
       db.items.create({
-        title: item.title,
-        category: item.category,
-        brand: item.brand,
-        image: item.image,
-        productId: item.productId,
-        productUrl: item.productUrl,
-        primaryKey: item.primaryKey,
-        createdAt: item.createdAt
+        title,
+        category,
+        brand,
+        image,
+        productId,
+        productUrl,
+        primaryKey,
+        createdAt
         })
       })
       ctx.status = 201;
