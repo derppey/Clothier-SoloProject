@@ -18,71 +18,67 @@ const config = {
 };
 
 const sequelize = new Sequelize(process.env.DB, 'postgres', 'admin', config);
-const db = {};
+const localDb:any = {};
 
 const files = fs.readdirSync(__dirname);
 
 for (const file of files) {
-  if (file !== 'index.js' && file !== 'db.js') {
+  if (file !== 'index.ts' && file !== 'db.ts') {
     const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
-    db[model.name] = model;
+    localDb[model.name] = model;
   }
 }
 
-for (const model in db) {
-  if (db[model].associate) db[model].associate(db);
+for (const model in localDb) {
+  if (localDb[model].associate) localDb[model].associate(localDb);
 }
 
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
+localDb.sequelize = sequelize;
+localDb.Sequelize = Sequelize;
 
 //Users to ADQ Association (1 to many)
-db.users.hasMany(db.ADQ, {
+localDb.users.hasMany(localDb.ADQ, {
   foreignKey: {
     name: 'userPrimaryKey',
     type: DataTypes.INTEGER,
     allowNull: false 
   }
 });
-db.ADQ.belongsTo(db.users);
+localDb.ADQ.belongsTo(localDb.users);
 
 //Items to ADQ Association (1 to many)
-db.items.hasMany(db.ADQ, {
+localDb.items.hasMany(localDb.ADQ, {
   foreignKey: {
     name: 'itemPrimaryKey',
     type: DataTypes.INTEGER,
     allowNull: false
   }
 });
-db.ADQ.belongsTo(db.items);
+localDb.ADQ.belongsTo(localDb.items);
 
 //Follow: many 2 many association
-db.users.belongsToMany(db.users, {as: "User", foreignKey: "userPrimaryKey", through: "Follows"})
-db.users.belongsToMany(db.users, {as: "Followed", foreignKey: "FollowedId", through: "Follows"})
+localDb.users.belongsToMany(localDb.users, {as: "User", foreignKey: "userPrimaryKey", through: "Follows"})
+localDb.users.belongsToMany(localDb.users, {as: "Followed", foreignKey: "FollowedId", through: "Follows"})
 
 
 //Relationship w/ Follow>
-db.users.hasMany(db.Follows, {
+localDb.users.hasMany(localDb.Follows, {
   foreignKey: {
     name: 'userPrimaryKey',
     type: DataTypes.INTEGER,
     allowNull: false 
   }
 });
-db.Follows.belongsTo(db.users);
+localDb.Follows.belongsTo(localDb.users);
 
-db.users.hasMany(db.Follows, {
+localDb.users.hasMany(localDb.Follows, {
   foreignKey: {
     name: 'FollowedId',
     type: DataTypes.INTEGER,
     allowNull: false 
   }
 });
-db.Follows.belongsTo(db.users);
+localDb.Follows.belongsTo(localDb.users);
 
 
-module.exports = db;
-
-
-
-const data = {}
+module.exports = localDb;

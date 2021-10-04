@@ -1022,11 +1022,11 @@ describe('Testing of endpoints on server', () => {
       "password" : "password"
     })
     .expect(200)
-    .then(response => {
+    .then((response: any) => {
       expect(response.body).toHaveProperty('accessToken');
       done();
     })
-    .catch(err => done(err));
+    .catch((err : any) => done(err));
  });
 
  test('POST /login should not login a user with incorrect login', (done) => {
@@ -1037,7 +1037,7 @@ describe('Testing of endpoints on server', () => {
       "password" : "ihuhiufsdiuhfihufsd"
     })
     .expect(401)
-    .end((err, res) => {
+    .end((err : any) => {
       if(err) return done(err);
       return done();
     })
@@ -1072,7 +1072,7 @@ describe('Testing of endpoints on server', () => {
       ItemId: 226
     })
     .expect(200)
-    .end((err, res) => {
+    .end((err:any) => {
       if(err) return done(err);
       return done();
     })
@@ -1084,7 +1084,7 @@ describe('Testing of endpoints on server', () => {
       ItemId: 0
     })
     .expect(204)
-    .end((err, res) => {
+    .end((err:any) => {
       if(err) return done(err);
       return done();
     })
@@ -1093,11 +1093,11 @@ describe('Testing of endpoints on server', () => {
    request(server)
     .post('/follow')
     .send({
-      currentUserId: 5,
+      currentUserId: 1,
       profileUser: 2,
     })
     .expect(201)
-    .end((err, res) => {
+    .end((err:any) => {
       if(err) return done(err);
       return done();
     })
@@ -1111,7 +1111,7 @@ describe('Testing of endpoints on server', () => {
       profileUser: 2,
     })
     .expect(404)
-    .end((err, res) => {
+    .end((err:any) => {
       if(err) return done(err);
       return done();
     })
@@ -1125,7 +1125,7 @@ describe('Testing of endpoints on server', () => {
       profileUser: 50000,
     })
     .expect(404)
-    .end((err, res) => {
+    .end((err:any) => {
       if(err) return done(err);
       return done();
     })
@@ -1135,7 +1135,7 @@ describe('Testing of endpoints on server', () => {
     request(server)
       .get('/follow')
       .expect(200)
-      .end((err, res) => {
+      .end((err:any) => {
         if(err) return done(err);
         return done();
       })
@@ -1146,7 +1146,7 @@ describe('Testing of endpoints on server', () => {
     request(server)
       .get('/adq')
       .expect(200)
-      .end((err, res) => {
+      .end((err:any) => {
         if(err) return done(err);
         return done();
       })
@@ -1160,7 +1160,7 @@ describe('Testing of endpoints on server', () => {
         ItemId: 226,
       })
       .expect(201)
-      .end((err, res) => {
+      .end((err:any) => {
         if(err) return done(err);
         return done();
       })
@@ -1174,7 +1174,7 @@ describe('Testing of endpoints on server', () => {
         ItemId: 226,
       })
       .expect(404)
-      .end((err, res) => {
+      .end((err:any) => {
         if(err) return done(err);
         return done();
       })
@@ -1188,7 +1188,7 @@ describe('Testing of endpoints on server', () => {
         ItemId: 65454848874984,
       })
       .expect(404)
-      .end((err, res) => {
+      .end((err:any) => {
         if(err) return done(err);
         return done();
       })

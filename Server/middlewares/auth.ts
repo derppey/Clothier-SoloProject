@@ -1,11 +1,11 @@
+export {};
 const jwt = require('jsonwebtoken');
 const SECRET_KEY = process.env.SECRET_KEY;
-const db = require('../models/index');
 const mainMethods = require('../controllers/mainMethods');
 
 
 
-const authMiddleware = async (ctx, next) => {
+const authMiddleware = async (ctx:any, next:any) => {
   const authHeaders = ctx.request.headers['authorization'];
   if (!authHeaders) return ctx.status = 403;
   const tokenType = authHeaders.split(' ')[0];
