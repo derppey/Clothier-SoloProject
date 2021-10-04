@@ -1,9 +1,11 @@
 'use strict';
-export {};
-const jwt = require('jsonwebtoken');
-const db = require('../models/index');
-const SECRET_KEY = process.env.SECRET_KEY;
+//import * as jwt from 'jsonwebtoken';
+//export {}
+const JWT = require('jsonwebtoken');
 
+const db = require('../models/index');
+const SECRET_KEY:any  = process.env.SECRET_KEY;
+require('dotenv').config();
 
 //User Methods
 exports.getUsers = async function (ctx:any) {
@@ -200,7 +202,7 @@ exports.login = async (ctx : any) => {
     // const validatedPass = await bcrypt.compare(password, user.password);
     const validatedPass = (password === user.dataValues.password);
     if (!validatedPass) throw new Error();
-    const accessToken = jwt.sign({ _id: user.dataValues.primaryKey }, SECRET_KEY);
+    const accessToken = JWT.sign({ _id: user.dataValues.primaryKey }, SECRET_KEY);
     ctx.status = 200
     ctx.body = { accessToken };
   } catch (error) {

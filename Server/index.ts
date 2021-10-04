@@ -4,7 +4,7 @@ const app = new Koa();
 const bodyParser = require('koa-bodyparser');
 const cors = require('@koa/cors');
 const router = require('./router');
-const db = require('./models/index');
+const database = require('./models/index');
 
 const corsConfig = {
   origin: 'http://localhost:3000',
@@ -18,7 +18,7 @@ app.use(router.routes());
 
 const PORT = 3001;
 (async function bootstrap () {
-  await db.sequelize.sync();
+  await database.sequelize.sync();
   
 })();
 const App = app.listen(PORT);

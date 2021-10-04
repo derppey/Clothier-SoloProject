@@ -3,7 +3,7 @@
 const Router = require('koa-router');
 const router = new Router();
 const mainMethods = require('./controllers/mainMethods');
-const authMiddleware = require('./middlewares/auth');
+const {authMiddleware} = require('./middlewares/auth');
 
 //Get all users
 router.get('/users', mainMethods.getUsers); //DONE
