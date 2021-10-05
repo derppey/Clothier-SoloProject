@@ -27,6 +27,15 @@ async login(user:BasicUser) {
     .then((res) => (res.json()))
     .catch((err) => console.log(err))
 },
+async logout() {
+  return fetch(`${baseURL}/logout`, {
+    method: 'POST',
+    credentials: 'include',
+    mode: 'cors',
+  })
+    .then((res) => (res.json()))
+    .catch((err) => console.log(err));
+},
 async profile (accessToken:string | number | null, tokenType:any) {
   return fetch(`${baseURL}/me`, {
     method: 'GET',
@@ -112,7 +121,25 @@ async fetchOneItem (id:string) {
   .then(response => response.json())
   .catch(err => console.log(err));
   return result;
-}
+},
+async deleteItemFromCloset(UserId:number, ItemId:number){
+  const res = fetch(baseURL + '/adq', {
+    method: 'DELETE',
+    credentials: 'include',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      UserId,
+      ItemId
+    })
+  })
+  .then(response => response.json())
+  .catch(err => console.log(err));
+  return res;
+},
+
 
 }
 

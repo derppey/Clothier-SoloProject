@@ -20,7 +20,7 @@ const actions = {
   setSelectedUser : (user:User) => ({
     type: 'setSelectedUser',
     payload: user
-  }),
+  })
 };
 
 export default actions;

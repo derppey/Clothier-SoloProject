@@ -8,6 +8,7 @@ import '../../styles/app.css';
 import fetchService from '../../fetchService';
 import { User, Category } from '../../Interfaces/interfaces'
 import Categories from '../Categories';
+import DeleteButton from '../DeleteButton';
 
 
 interface props  {
@@ -15,10 +16,11 @@ interface props  {
   getUser: Function,
   getItems: Function
   searchVal: string
+  DeleteItemFromCloset: Function
 }
 
 
-function MyCloset({user, getUser, getItems, searchVal}: props) : JSX.Element {
+function MyCloset({user, getUser, getItems, DeleteItemFromCloset, searchVal}: props) : JSX.Element {
   const ADQitems = user.ADQs;
   const userCategories = [...new Set(user.ADQs.map((item) => item.item.category))];
   const initialState = userCategories.map(category => {return {category: category, isActive: ''}})
@@ -86,6 +88,7 @@ function MyCloset({user, getUser, getItems, searchVal}: props) : JSX.Element {
                 <div className='tile is-child box item-box' key={item.itemPrimaryKey}>
                   <Link to={`/itemDetail/${item.itemPrimaryKey}`}>
                     <img src={item.item.image} alt="n/a"/>
+                  <DeleteButton user={user} item={item} DeleteItemFromCloset={DeleteItemFromCloset} />
                   </Link>
             </div>
             )}
@@ -95,6 +98,7 @@ function MyCloset({user, getUser, getItems, searchVal}: props) : JSX.Element {
                 <div className='tile is-child box item-box' key={item.itemPrimaryKey}>
                   <Link to={`/itemDetail/${item.itemPrimaryKey}`}>
                     <img src={item.item.image} alt="n/a"/>
+                    <DeleteButton user={user} item={item} DeleteItemFromCloset={DeleteItemFromCloset} />
                   </Link>
                 </div>
               )}
@@ -104,6 +108,7 @@ function MyCloset({user, getUser, getItems, searchVal}: props) : JSX.Element {
                   <div className='tile is-child box item-box' key={item.itemPrimaryKey}>
                     <Link to={`/itemDetail/${item.itemPrimaryKey}`}>
                       <img src={item.item.image} alt="n/a"/>
+                    <DeleteButton user={user} item={item} DeleteItemFromCloset={DeleteItemFromCloset}/>
                     </Link>
                   </div>
                 )}
@@ -112,6 +117,7 @@ function MyCloset({user, getUser, getItems, searchVal}: props) : JSX.Element {
               {filteredItems.slice((quarter*3)).map(item =>
                   <div className='tile is-child box item-box' key={item.itemPrimaryKey}>
                     <Link to={`/itemDetail/${item.itemPrimaryKey}`}>
+                       <DeleteButton user={user} item={item} DeleteItemFromCloset={DeleteItemFromCloset} />
                       <img src={item.item.image} alt="n/a"/>
                     </Link>
                   </div>
@@ -139,6 +145,7 @@ const mapStateToProps = ({store}:any) => {
 
 const mapDispatchToProps = (dispatch:any) => {
   return {
+    DeleteItemFromCloset: (action:any) => dispatch(action),
     getItems: (action:any) => dispatch(action),
     getUser: (action:any) => dispatch(action),
   };

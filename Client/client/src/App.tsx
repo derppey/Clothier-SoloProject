@@ -13,7 +13,7 @@ import UserCloset from './components/UserCloset/UserCloset';
 import LoginPage from './components/LoginPage/LoginPage';
 import actions from './redux/actions';
 import { connect } from 'react-redux';
-
+import apiService from './apiServices';
 import logo from './utils/ClothierLiteCrop.png'
 import fetchService from './fetchService'
 
@@ -59,6 +59,7 @@ function App({getItems, getUser, user, setSearchVal, searchVal}: props): JSX.Ele
 
   const logOut = () => {
     localStorage.removeItem('accessToken');
+    apiService.logout();
     setAuthenticated(false);
   }
 
