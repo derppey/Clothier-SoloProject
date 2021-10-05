@@ -1,15 +1,15 @@
 'use strict';
 
-const JWT = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const db = require('../models/index');
+import JWT from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+import db from '../models/index';
 import {Context} from 'koa';
 const SECRET_KEY:any  = process.env.SECRET_KEY;
 
 require('dotenv').config();
 
 //User Methods
-exports.getUsers = async function (ctx:any) {
+export async function getUsers (ctx:any) {
   try {
     ctx.body = await db.users.findAll({
       include: [
@@ -31,7 +31,7 @@ exports.getUsers = async function (ctx:any) {
   }
 };
 
-exports.postUsers = async (ctx : any) => {
+export async function postUsers (ctx : any) {
   const user = ctx.request.body;
   const pass = await bcrypt.hash(user.password, 10);
   try {
@@ -55,7 +55,7 @@ exports.postUsers = async (ctx : any) => {
 };
 
 //User Methods
-exports.getUserById = async function (id: number) {
+export async function getUserById (id: number) {
   try {
     return await db.users.findOne({
       where: { primaryKey: id},
@@ -84,7 +84,7 @@ exports.getUserById = async function (id: number) {
   }
 };
 
-exports.profile = async (ctx : any) => {
+export async function profile (ctx : any) {
   try {
     const user = ctx.request.user;
     ctx.status = 200;
@@ -96,7 +96,7 @@ exports.profile = async (ctx : any) => {
 };
 
 //Item Methods
-exports.getItems = async function (ctx : any) {
+export async function getItems (ctx : any) {
   try {
     ctx.body = await db.items.findAll({
       attributes: ['title', 'category', 'brand', 'image', 'productId', 'productUrl', 'primaryKey', 'createdAt']
@@ -108,7 +108,7 @@ exports.getItems = async function (ctx : any) {
   }
 };
 
-exports.getOneItem = async function (ctx : any) {
+export async function getOneItem(ctx : any) {
   const id = ctx.request.body.ItemId;
   try {
     const body = await db.items.findOne({
@@ -134,7 +134,7 @@ interface itemProp {
   createdAt: string;
 }
 
-exports.postItems = async (ctx: any) => {
+export async function postItems(ctx: any) {
   const body = ctx.request.body;
   try {
     await body.forEach(({title,category, brand, image, productId, productUrl, primaryKey, createdAt} : itemProp) => {
@@ -157,7 +157,7 @@ exports.postItems = async (ctx: any) => {
 };
 
 //ADQ Methods (creates relationship between a user and multiple items)
-exports.getADQ = async function (ctx : any) {
+export async function getADQ(ctx : any) {
   try {
     ctx.body = await db.ADQ.findAll(); 
     ctx.status = 200;
@@ -167,7 +167,7 @@ exports.getADQ = async function (ctx : any) {
   }
 };
 
-exports.postADQ = async (ctx : any) => {
+export async function postADQ(ctx : any) {
   const body = ctx.request.body;
   try {
     await db.ADQ.create({
@@ -183,7 +183,7 @@ exports.postADQ = async (ctx : any) => {
 
 // Follow Users Method
 
-exports.followUser = async (ctx:any) => {
+export async function followUser(ctx:any) {
   const body = ctx.request.body;
   try {
     const currentUser = await db.users.findOne({where: {primaryKey: body.currentUserId}})
@@ -196,7 +196,7 @@ exports.followUser = async (ctx:any) => {
   }
 };
 
-exports.getFollows = async (ctx: any) => {
+export async function getFollows(ctx: any){
   try {
     ctx.body = await db.Follows.findAll()
     ctx.status = 200;
@@ -207,7 +207,7 @@ exports.getFollows = async (ctx: any) => {
 };
 
 //LogIn method
-exports.login = async (ctx : any) => {
+export async function login (ctx : any){
   const { email , password } = ctx.request.body;
   try {
     const user = await db.users.findOne({
@@ -230,7 +230,7 @@ interface logoutContext extends Context {
   }
 }
 
-exports.logout = async (ctx: logoutContext) => {
+export async function logout (ctx: logoutContext) {
   const authHeaders = ctx.request.headers['authorization'];
   if (!authHeaders) return ctx.status = 403;
   const token = authHeaders.split(' ')[1];

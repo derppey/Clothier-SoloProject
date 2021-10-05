@@ -1,12 +1,11 @@
-const fs = require('fs');
-const path = require('path');
-const { INTEGER } = require('sequelize');
-const Sequelize = require('sequelize');
-const {DataTypes} = require('sequelize');
+import fs from 'fs';
+import path from 'path';
+import { Dialect, Sequelize } from 'sequelize';
+import {DataTypes} from 'sequelize';
   
 const config = {
   host: 'Localhost',
-  dialect: 'postgres',
+  dialect: 'postgres' as Dialect,
   logging: false,
   pool: {
     max: 5,
@@ -14,17 +13,16 @@ const config = {
     acquire: 30000,
     idle: 10000, 
   },
-  operatorsAliases: 0 
 };
 
-const sequelize = new Sequelize(process.env.DB, 'postgres', 'admin', config);
+const sequelize = new Sequelize(process.env.DB ? process.env.DB : 'postgres', 'postgres', 'admin', config);
 const localDb:any = {};
 
 const files = fs.readdirSync(__dirname);
 
 for (const file of files) {
   if (file !== 'index.ts' && file !== 'db.ts') {
-    const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
+    const model = require(path.join(__dirname, file))(sequelize, DataTypes);
     localDb[model.name] = model;
   }
 }
@@ -80,5 +78,4 @@ localDb.users.hasMany(localDb.Follows, {
 });
 localDb.Follows.belongsTo(localDb.users);
 
-
-module.exports = localDb;
+export default localDb;
