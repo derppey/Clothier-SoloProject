@@ -1,5 +1,5 @@
 
-module.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize:any, DataTypes:any) => {
   const users = sequelize.define('users', {
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,

@@ -1,5 +1,5 @@
 
-module.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize : any, DataTypes : any) => {
   const ADQ = sequelize.define('ADQ', {
     primaryKey: {
       type: DataTypes.INTEGER,

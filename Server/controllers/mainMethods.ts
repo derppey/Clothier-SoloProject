@@ -1,14 +1,15 @@
 'use strict';
 
-const db = require('../models/index');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+import JWT from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+import db from '../models/index';
+import {Context} from 'koa';
+const SECRET_KEY:any  = process.env.SECRET_KEY;
 
-const SECRET_KEY = process.env.SECRET_KEY;
-
+require('dotenv').config();
 
 //User Methods
-exports.getUsers = async function (ctx) {
+export async function getUsers (ctx:any) {
   try {
     ctx.body = await db.users.findAll({
       include: [
@@ -30,15 +31,16 @@ exports.getUsers = async function (ctx) {
   }
 };
 
-exports.postUsers = async ctx => {
+export async function postUsers (ctx : any) {
   const user = ctx.request.body;
+  const pass = await bcrypt.hash(user.password, 10);
   try {
     await db.users.create({
       firstName: user.firstName,
       lastName: user.lastName,
       username: user.username,
       email: user.email,
-      password: user.password,
+      password: pass,
       })
     ctx.status = 201;
     ctx.body = await db.users.findOne({
@@ -46,13 +48,14 @@ exports.postUsers = async ctx => {
       attributes: ['primaryKey']
     })
   } catch (err) {
+    console.log(err);
     ctx.body = err;
     ctx.status = 500;
   }
 };
 
 //User Methods
-exports.getUserById = async function (id) {
+export async function getUserById (id: number) {
   try {
     return await db.users.findOne({
       where: { primaryKey: id},
@@ -81,7 +84,7 @@ exports.getUserById = async function (id) {
   }
 };
 
-exports.profile = async (ctx) => {
+export async function profile (ctx : any) {
   try {
     const user = ctx.request.user;
     ctx.status = 200;
@@ -93,7 +96,7 @@ exports.profile = async (ctx) => {
 };
 
 //Item Methods
-exports.getItems = async function (ctx) {
+export async function getItems (ctx : any) {
   try {
     ctx.body = await db.items.findAll({
       attributes: ['title', 'category', 'brand', 'image', 'productId', 'productUrl', 'primaryKey', 'createdAt']
@@ -105,7 +108,7 @@ exports.getItems = async function (ctx) {
   }
 };
 
-exports.getOneItem = async function (ctx) {
+export async function getOneItem(ctx : any) {
   const id = ctx.request.body.ItemId;
   try {
     const body = await db.items.findOne({
@@ -120,19 +123,30 @@ exports.getOneItem = async function (ctx) {
   }
 };
 
-exports.postItems = async ctx => {
+interface itemProp {
+  title: string;
+  category: string;
+  brand: string;
+  image: string;
+  productId: number;
+  productUrl: string;
+  primaryKey: number;
+  createdAt: string;
+}
+
+export async function postItems(ctx: any) {
   const body = ctx.request.body;
   try {
-    await body.forEach(item => {
+    await body.forEach(({title,category, brand, image, productId, productUrl, primaryKey, createdAt} : itemProp) => {
       db.items.create({
-        title: item.title,
-        category: item.category,
-        brand: item.brand,
-        image: item.image,
-        productId: item.productId,
-        productUrl: item.productUrl,
-        primaryKey: item.primaryKey,
-        createdAt: item.createdAt
+        title,
+        category,
+        brand,
+        image,
+        productId,
+        productUrl,
+        primaryKey,
+        createdAt
         })
       })
       ctx.status = 201;
@@ -143,7 +157,7 @@ exports.postItems = async ctx => {
 };
 
 //ADQ Methods (creates relationship between a user and multiple items)
-exports.getADQ = async function (ctx) {
+export async function getADQ(ctx : any) {
   try {
     ctx.body = await db.ADQ.findAll(); 
     ctx.status = 200;
@@ -153,7 +167,7 @@ exports.getADQ = async function (ctx) {
   }
 };
 
-exports.postADQ = async ctx => {
+export async function postADQ(ctx : any) {
   const body = ctx.request.body;
   try {
     await db.ADQ.create({
@@ -169,7 +183,7 @@ exports.postADQ = async ctx => {
 
 // Follow Users Method
 
-exports.followUser = async ctx => {
+export async function followUser(ctx:any) {
   const body = ctx.request.body;
   try {
     const currentUser = await db.users.findOne({where: {primaryKey: body.currentUserId}})
@@ -182,7 +196,7 @@ exports.followUser = async ctx => {
   }
 };
 
-exports.getFollows = async function (ctx) {
+export async function getFollows(ctx: any){
   try {
     ctx.body = await db.Follows.findAll()
     ctx.status = 200;
@@ -193,15 +207,15 @@ exports.getFollows = async function (ctx) {
 };
 
 //LogIn method
-exports.login = async (ctx) => {
+export async function login (ctx : any){
   const { email , password } = ctx.request.body;
   try {
     const user = await db.users.findOne({
       where: { email: email}});
-    // const validatedPass = await bcrypt.compare(password, user.password);
-    const validatedPass = (password === user.dataValues.password);
+    const validatedPass = await bcrypt.compare(password, user.password);
+    //const validatedPass = (password === user.dataValues.password);
     if (!validatedPass) throw new Error();
-    const accessToken = jwt.sign({ _id: user.dataValues.primaryKey }, SECRET_KEY);
+    const accessToken = JWT.sign({ _id: user.dataValues.primaryKey }, SECRET_KEY);
     ctx.status = 200
     ctx.body = { accessToken };
   } catch (error) {
@@ -209,56 +223,16 @@ exports.login = async (ctx) => {
     ctx.body = { error: '401', message: error };
   }
 };
-
-//The following code is just to get the items from Zappos Api in order to populate the DB
-
-//const { zapposProductList } = require('../tempDb')
-//const results = zapposProductList.results;
-var axios = require("axios").default;
-let resultsFiltered;
-
-exports.zapposFilter = async () => {
-  resultsFiltered = results.map((item, index) => {
-    return {
-      [index] : {
-        brandName: item.brandName,
-        productName: item.productName,
-        productId: item.productId,
-        productURL: item.productUrl,
-      }
-    }
-  })
-
-  let count = 0;
-  
-  const resultFunc = async () => {
-    if (count > 99) return clearInterval(interval);
-    console.log(count);
-    let resItem = resultsFiltered[count][count];
-    resultsFiltered[count][count] = {...resItem, ... await fetchReq(resItem.productId)}
-    console.log(resultsFiltered[count][count]);
-    return count++;
+interface logoutContext extends Context {
+  body: {
+    status: string;
+    message: string;
   }
-  
-  const interval = setInterval(resultFunc, 3000);
-
 }
-exports.postItemsZappo = async (ctx) => {
-  const body = resultsFiltered;
-  try {
-    await body.forEach((item, index) => {
-      db.items.create({
-        title: item[index].productName,
-        category: item[index].category,
-        brand: item[index].brandName,
-        image: item[index].imageUrl,
-        productId: item[index].productId,
-        productUrl: item[index].productURL
-        })
-      })
-      ctx.status = 201;
-  } catch (err) {
-    ctx.body = err;
-    ctx.status = 500;
-  }
+
+export async function logout (ctx: logoutContext) {
+  const authHeaders = ctx.request.headers['authorization'];
+  if (!authHeaders) return ctx.status = 403;
+  const token = authHeaders.split(' ')[1];
+  await db.BlackList.create({sessionKey: token});
 };
