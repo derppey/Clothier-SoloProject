@@ -3,7 +3,9 @@
 const JWT = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const db = require('../models/index');
+import {Context} from 'koa';
 const SECRET_KEY:any  = process.env.SECRET_KEY;
+
 require('dotenv').config();
 
 //User Methods
@@ -221,4 +223,16 @@ exports.login = async (ctx : any) => {
     ctx.body = { error: '401', message: error };
   }
 };
+interface logoutContext extends Context {
+  body: {
+    status: string;
+    message: string;
+  }
+}
 
+exports.logout = async (ctx: logoutContext) => {
+  const authHeaders = ctx.request.headers['authorization'];
+  if (!authHeaders) return ctx.status = 403;
+  const token = authHeaders.split(' ')[1];
+  await db.BlackList.create({sessionKey: token});
+};

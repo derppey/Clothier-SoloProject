@@ -1014,7 +1014,7 @@ describe('Testing of endpoints on server', () => {
   expect(addUser.body).toHaveProperty('primaryKey');
  });
 
- test('POST /login should login a user with correct login', (done) => {
+ test('POST /login should login a user with correct login', (done : Function) => {
   request(server)
     .post('/login')
     .send({
@@ -1029,7 +1029,7 @@ describe('Testing of endpoints on server', () => {
     .catch((err : any) => done(err));
  });
 
- test('POST /login should not login a user with incorrect login', (done) => {
+ test('POST /login should not login a user with incorrect login', (done : Function) => {
    request(server)
     .post('/login')
     .send({
@@ -1193,6 +1193,22 @@ describe('Testing of endpoints on server', () => {
         return done();
       })
   })
+
+  test('POST /logout should blacklist the session', async () => {
+    const login = await request(server).post('/login').send({
+     "email": "testUser1234@gmail.com",
+     "password" : "password"
+   });
+   await request(server).post('/logout').set(
+    {
+        'authorization': 'Bearer ' + login.body['accessToken'],
+        'userId': '1'
+    });
+    await request(server)
+    .get('/me')
+    .set('authorization','Bearer ' + login.body['accessToken'])
+    .expect(401)
+  });
  
 
 });

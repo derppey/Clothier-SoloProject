@@ -32,5 +32,6 @@ router.post('/follow', mainMethods.followUser); // Done
 
 //User Login Authenticaiton
 router.post('/login', mainMethods.login); //DONE
+router.post('/logout', mainMethods.logout);
 
 module.exports = router;

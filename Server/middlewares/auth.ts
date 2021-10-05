@@ -3,14 +3,18 @@
 var jwt = require('jsonwebtoken');
 const secret:any = process.env.SECRET_KEY;
 const mainMethods = require('../controllers/mainMethods');
-
-
+const db = require('../models/index');
 
 exports.authMiddleware = async (ctx:any, next:any) => {
   const authHeaders = ctx.request.headers['authorization'];
   if (!authHeaders) return ctx.status = 403;
   const tokenType = authHeaders.split(' ')[0];
   const token = authHeaders.split(' ')[1];
+  const result = await db.BlackList.findOne({where: {sessionKey: token}});
+  if(result){
+    ctx.status = 401;
+    return;
+  }
   try {
     let id;
     if (tokenType === 'Bearer') id = jwt.verify(token, secret);
