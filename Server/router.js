@@ -21,9 +21,11 @@ router.post('/items', mainMethods.postItems); //NO LONGER NEEDED
 router.post('/OneItem', mainMethods.getOneItem);  //Done
 
 //Get all adquisitions
-router.get('/adq', mainMethods.getADQ);
+router.get('/adq', mainMethods.getADQ); //done
 // Register new adquisition
-router.post('/adq', mainMethods.postADQ);
+router.post('/adq', mainMethods.postADQ); //done
+//Remove a adquisition
+router.delete('/adq', mainMethods.removeADQ);
 
 //Get all follows
 router.get('/follow', mainMethods.getFollows); // Done

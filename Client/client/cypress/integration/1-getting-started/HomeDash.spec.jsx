@@ -1,5 +1,3 @@
-
-
 describe('HomeDash Component', () => {
     it('Should change whats rendered when top nav links are clicked', () => {
         cy.visit('http://localhost:3000/');
