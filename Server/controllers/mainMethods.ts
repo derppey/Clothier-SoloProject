@@ -181,6 +181,23 @@ export async function postADQ(ctx : any) {
   }
 };
 
+export async function removeADQ(ctx : any) {
+  const body = ctx.request.body;
+  try{
+    await db.ADQ.destroy({
+      where: {
+        userPrimaryKey: body.UserId,
+        itemPrimaryKey: body.ItemId,
+      }
+    })
+    ctx.status = 201;
+  }catch(er){
+    ctx.body = er;
+    ctx.status = 404;
+  }
+  
+}
+
 // Follow Users Method
 
 export async function followUser(ctx:any) {

@@ -24,6 +24,8 @@ router.post('/OneItem', mainMethods.getOneItem);  //Done
 router.get('/adq', mainMethods.getADQ);
 // Register new adquisition
 router.post('/adq', mainMethods.postADQ);
+//Remove a adquisition
+router.delete('/adq', mainMethods.removeADQ);
 
 //Get all follows
 router.get('/follow', mainMethods.getFollows); // Done
