@@ -1107,7 +1107,7 @@ describe('Testing of endpoints on server', () => {
    request(server)
     .post('/follow')
     .send({
-      currentUserId: 100,
+      currentUserId: 6444454848,
       profileUser: 2,
     })
     .expect(404)
@@ -1192,6 +1192,17 @@ describe('Testing of endpoints on server', () => {
         if(err) return done(err);
         return done();
       })
+  })
+  test('DELETE /adq should remove item from closet', async () => {
+    const priorToAdd = await request(server).get('/adq')
+    await request(server).post('/adq').send({UserId: 1, ItemId: 227})
+    const afterAdd = await request(server).get('/adq')
+    await request(server).delete('/adq').send({UserId: 1,ItemId: 227})
+    const afterRemove = await request(server).get('/adq')
+    if(priorToAdd.body.length < afterAdd.body.length && afterAdd.body.length > afterRemove.body.length){
+        expect(true).toBe(true);
+    }else{expect(false).toBe(true)}
+
   })
 
   test('POST /logout should blacklist the session', async () => {
