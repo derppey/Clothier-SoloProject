@@ -1,10 +1,10 @@
-const Koa = require('koa');
+import Koa from 'koa';
 require('dotenv').config();
 const app = new Koa();
 const bodyParser = require('koa-bodyparser');
 const cors = require('@koa/cors');
 const router = require('./router');
-const database = require('./models/index');
+import database from './models/index';
 
 const corsConfig = {
   origin: 'http://localhost:3000',
